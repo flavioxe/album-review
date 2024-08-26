@@ -1,0 +1,24 @@
+@use 'variables';
+
+.app-container {
+    background-color: variables.$background-color;
+    color: #333;
+    padding: 20px;
+}
+
+.home-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-top: 40px;
+}

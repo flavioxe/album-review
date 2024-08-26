@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "name": "Orquídeas",
+        "artist": "Kali Uchis",
+        "cover": "",
+        "tracks": [
+            {
+                "title": "Track 1",
+                "ratings": {
+                    "user1": 8,
+                    "user2": 9
+                }
+            },
+            {
+                "title": "Track 2",
+                "ratings": {
+                    "user1": 7,
+                    "user2": 8
+                }
+            },
+            {
+                "title": "Track 3",
+                "ratings": {
+                    "user1": null,
+                    "user2": null
+                }
+            }
+        ],
+        "bestNewTrack": {
+            "user1": "Track 1",
+            "user2": "Track 2"
+        },
+        "primaryColor": "#FF5733",
+        "secondaryColor": "#C70039",
+        "releaseDate": "2024-08-26"
+    }
+]
