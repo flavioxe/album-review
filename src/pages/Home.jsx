@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import AlbumForm from "../components/AlbumForm";
 import AlbumCard from "../components/AlbumCard";
-import albumsData from "../data/albums.json";
+import albumsData from "../../albums.json";
 
 import "../styles/Home.scss"; // Importe o arquivo de estilo para a página
 

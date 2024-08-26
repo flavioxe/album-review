@@ -19,6 +19,8 @@ export default function AlbumForm({ onAddAlbum }) {
     setTracks((prevTracks) => [...prevTracks, ""]); // Adiciona uma nova faixa vazia
   };
 
+  const API_URL = import.meta.env.VITE_API_URL; // Obtém a URL da API da variável de ambiente
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,7 +43,7 @@ export default function AlbumForm({ onAddAlbum }) {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/albums", {
+      const response = await fetch(`${API_URL}/albums`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +56,9 @@ export default function AlbumForm({ onAddAlbum }) {
       }
 
       const addedAlbum = await response.json();
-      onAddAlbum(addedAlbum);
+      if (typeof onAddAlbum === "function") {
+        onAddAlbum(addedAlbum); // Chama a função passada como prop
+      }
 
       // Reseta os campos do formulário
       setName("");

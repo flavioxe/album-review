@@ -10,7 +10,10 @@ export default [
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node, // Adiciona o suporte a globals do Node.js
+      },
       parserOptions: {
         ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
@@ -39,6 +42,10 @@ export default [
           ignore: ["albums"],
         },
       ],
+    },
+    env: {
+      browser: true,
+      node: true, // Adiciona suporte ao ambiente Node.js
     },
   },
 ];
