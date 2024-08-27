@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { useAlbum } from "../context/AlbumContext"; // Ajuste o caminho conforme necessário
+import { useAlbum } from "../context/AlbumContext";
+import { ref, set } from "firebase/database";
+import { database } from "../firebase"; // Certifique-se de que este arquivo está configurado corretamente
 
 export default function AlbumForm() {
-  const { addAlbum } = useAlbum(); // Obtém a função de adicionar álbum do contexto
+  const { addAlbum } = useAlbum();
   const [name, setName] = useState("");
   const [artist, setArtist] = useState("");
   const [releaseDate, setReleaseDate] = useState("");
   const [primaryColor, setPrimaryColor] = useState("");
   const [secondaryColor, setSecondaryColor] = useState("");
   const [cover, setCover] = useState("");
-  const [tracks, setTracks] = useState(["", "", "", ""]); // Inicializa com 4 faixas
+  const [tracks, setTracks] = useState(["", "", "", ""]);
 
   const handleTrackChange = (index, value) => {
     const newTracks = [...tracks];
@@ -21,13 +23,11 @@ export default function AlbumForm() {
     setTracks((prevTracks) => [...prevTracks, ""]); // Adiciona uma nova faixa vazia
   };
 
-  const API_URL = import.meta.env.VITE_API_URL; // Obtém a URL da API da variável de ambiente
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newAlbum = {
-      id: Date.now(),
+      id: Date.now(), // Use um ID único, mas considere usar um ID gerado pelo Firebase
       name,
       artist,
       releaseDate,
@@ -37,7 +37,7 @@ export default function AlbumForm() {
       tracks: tracks.map((track) => ({
         title: track,
         ratings: { user1: null, user2: null },
-      })), // Mapeia as faixas para o formato desejado
+      })),
       bestNewTrack: {
         user1: null,
         user2: null,
@@ -45,20 +45,10 @@ export default function AlbumForm() {
     };
 
     try {
-      const response = await fetch(`${API_URL}/albums`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newAlbum),
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao adicionar o álbum");
-      }
-
-      const addedAlbum = await response.json();
-      addAlbum(addedAlbum); // Chama a função para adicionar álbum no contexto
+      // Usa o Firebase Realtime Database para armazenar o novo álbum
+      const albumRef = ref(database, `albums/${newAlbum.id}`);
+      await set(albumRef, newAlbum);
+      addAlbum(newAlbum); // Chama a função para adicionar álbum no contexto
 
       // Reseta os campos do formulário
       setName("");

@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAlbum } from "../context/AlbumContext"; // Importa o contexto dos álbuns
+import { getDatabase, ref, onValue } from "firebase/database"; // Importa as funções necessárias do Firebase
 import AlbumCard from "../components/AlbumCard";
 import "../styles/Home.scss"; // Importe o arquivo de estilo para a página
 
 export default function Home() {
-  const { albums } = useAlbum(); // Obtém a lista de álbuns do contexto
+  const [albums, setAlbums] = useState([]); // Estado local para armazenar álbuns
   const navigate = useNavigate();
+  const database = getDatabase(); // Obtém a instância do banco de dados
 
   const navigateToAddAlbum = () => {
     navigate("/add-album");
   };
+
+  // Função para buscar álbuns do Firebase
+  const fetchAlbums = () => {
+    const albumsRef = ref(database, "albums"); // Referência ao nó 'albums' no Realtime Database
+    onValue(albumsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const albumsArray = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+        setAlbums(albumsArray); // Atualiza a lista de álbuns no estado local
+      } else {
+        setAlbums([]); // Se não houver dados, define como array vazio
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchAlbums(); // Chama a função para buscar álbuns quando o componente é montado
+  }, []);
 
   return (
     <div>
