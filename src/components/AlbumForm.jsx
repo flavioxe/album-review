@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useAlbum } from "../context/AlbumContext"; // Ajuste o caminho conforme necessário
 
-export default function AlbumForm({ onAddAlbum }) {
+export default function AlbumForm() {
+  const { addAlbum } = useAlbum(); // Obtém a função de adicionar álbum do contexto
   const [name, setName] = useState("");
   const [artist, setArtist] = useState("");
   const [releaseDate, setReleaseDate] = useState("");
@@ -56,9 +58,7 @@ export default function AlbumForm({ onAddAlbum }) {
       }
 
       const addedAlbum = await response.json();
-      if (typeof onAddAlbum === "function") {
-        onAddAlbum(addedAlbum); // Chama a função passada como prop
-      }
+      addAlbum(addedAlbum); // Chama a função para adicionar álbum no contexto
 
       // Reseta os campos do formulário
       setName("");

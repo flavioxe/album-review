@@ -1,20 +1,12 @@
-// src/pages/Home.jsx
-
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-// import AlbumForm from "../components/AlbumForm";
+import { useAlbum } from "../context/AlbumContext"; // Importa o contexto dos álbuns
 import AlbumCard from "../components/AlbumCard";
-import albumsData from "../../albums.json";
-
 import "../styles/Home.scss"; // Importe o arquivo de estilo para a página
 
 export default function Home() {
-  const [albums, setAlbums] = useState(albumsData);
+  const { albums } = useAlbum(); // Obtém a lista de álbuns do contexto
   const navigate = useNavigate();
-
-  const handleAddAlbum = (newAlbum) => {
-    setAlbums((prevAlbums) => [...prevAlbums, newAlbum]);
-  };
 
   const navigateToAddAlbum = () => {
     navigate("/add-album");
@@ -28,9 +20,11 @@ export default function Home() {
       </button>
       <h2>Álbuns Cadastrados</h2>
       <div className="album-grid">
-        {albums.map((album) => (
-          <AlbumCard key={album.id} album={album} />
-        ))}
+        {albums.length === 0 ? (
+          <p>Nenhum álbum cadastrado ainda.</p>
+        ) : (
+          albums.map((album) => <AlbumCard key={album.id} album={album} />)
+        )}
       </div>
     </div>
   );

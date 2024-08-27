@@ -140,5 +140,97 @@
       "user1": null,
       "user2": null
     }
+  },
+  {
+    "id": 1724717587281,
+    "name": "<Dall>",
+    "artist": "ARTMS",
+    "releaseDate": "2024-05-31",
+    "primaryColor": "#b070c2",
+    "secondaryColor": "#815f5f",
+    "cover": "https://upload.wikimedia.org/wikipedia/en/thumb/c/ca/Artms_-_Dall.png/220px-Artms_-_Dall.png",
+    "tracks": [
+      {
+        "title": "url",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Virtual Angel",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Sparkle",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "The Hitchhiker's Guide to the Galaxy",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Flower Rhythm",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Candy Crush",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Air",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Unf/Air",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Distress",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Butterfly Effect",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      },
+      {
+        "title": "Birth",
+        "ratings": {
+          "user1": null,
+          "user2": null
+        }
+      }
+    ],
+    "bestNewTrack": {
+      "user1": null,
+      "user2": null
+    }
   }
 ]
