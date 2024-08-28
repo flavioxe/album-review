@@ -9,12 +9,14 @@
 }
 
 .album-card {
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
     background-color: $primary-color;
     transition: transform 0.2s;
+
+    cursor: pointer;
 }
 
 .album-card:hover {
