@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDatabase, ref, onValue } from "firebase/database"; // Importa as funções necessárias do Firebase
+import { getDatabase, ref, onValue } from "firebase/database";
 import AlbumCard from "../components/AlbumCard";
-import "../styles/Home.scss"; // Importe o arquivo de estilo para a página
+
+import "../styles/Home.scss";
 
 export default function Home() {
-  const [albums, setAlbums] = useState([]); // Estado local para armazenar álbuns
+  const [albums, setAlbums] = useState([]);
+
   const navigate = useNavigate();
-  const database = getDatabase(); // Obtém a instância do banco de dados
+  const database = getDatabase();
 
   const navigateToAddAlbum = () => {
     navigate("/add-album");
@@ -23,24 +25,37 @@ export default function Home() {
           id: key,
           ...data[key],
         }));
-        setAlbums(albumsArray); // Atualiza a lista de álbuns no estado local
+        setAlbums(albumsArray);
       } else {
-        setAlbums([]); // Se não houver dados, define como array vazio
+        setAlbums([]);
       }
     });
   };
 
   useEffect(() => {
-    fetchAlbums(); // Chama a função para buscar álbuns quando o componente é montado
+    fetchAlbums();
   }, []);
 
   return (
-    <div>
-      <h1>Avaliações de Álbuns Musicais</h1>
-      <button onClick={navigateToAddAlbum} className="add-album-btn">
-        Cadastrar Novo Álbum
-      </button>
-      <h2>Álbuns Cadastrados</h2>
+    <main className="d-flex flex-column align-items-start">
+      <header className="d-flex flex-column align-items-start gap-2 home-header">
+        <h1 className="text-left text-bold">Bem-vindo ao app</h1>
+        <h1 className="text-left text-bold">Reviews avançadas</h1>
+        <h3 className="text-left">
+          Uma plataforma para avaliação de álbuns musicais
+        </h3>
+        <button onClick={navigateToAddAlbum} className="add-album-btn">
+          Ver todas as reviews
+        </button>
+      </header>
+
+      <section className="d-flex align-items-center justify-content-between w-100">
+        <h4>Últimos lançamentos</h4>
+        <button onClick={navigateToAddAlbum} className="button-primary">
+          + Novo álbum
+        </button>
+      </section>
+
       <div className="album-grid">
         {albums.length === 0 ? (
           <p>Nenhum álbum cadastrado ainda.</p>
@@ -48,6 +63,6 @@ export default function Home() {
           albums.map((album) => <AlbumCard key={album.id} album={album} />)
         )}
       </div>
-    </div>
+    </main>
   );
 }
