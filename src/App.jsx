@@ -5,6 +5,8 @@ import AddAlbum from "./pages/AddAlbum";
 import AlbumReview from "./pages/AlbumReview";
 import { AlbumProvider } from "./context/AlbumContext"; // Ajuste o caminho conforme necessário
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 export default function App() {
   return (
     <AlbumProvider>

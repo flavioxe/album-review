@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AlbumForm from "../components/AlbumForm"; // Ajuste o caminho conforme necessário
+import AlbumForm from "../components/AlbumForm/AlbumForm";
 
-function AddAlbum() {
+export default function AddAlbum() {
   const [albums, setAlbums] = useState([]);
 
   const handleAddAlbum = (newAlbum) => {
@@ -10,10 +10,11 @@ function AddAlbum() {
   };
 
   return (
-    <div>
-      <h1>Adicionar Álbum</h1>
+    <div className="d-flex flex-column align-items-start gap-3">
+      <h2>Cadastrar Álbum</h2>
       <AlbumForm onAddAlbum={handleAddAlbum} />
-      <h2>Álbuns Cadastrados</h2>
+
+      <h4>Álbuns cadastrados</h4>
       <ul>
         {albums.map((album) => (
           <li key={album.id}>
@@ -24,5 +25,3 @@ function AddAlbum() {
     </div>
   );
 }
-
-export default AddAlbum;

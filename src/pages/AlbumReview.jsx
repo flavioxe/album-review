@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Importando useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
-import "../styles/AlbumReview.scss"; // Importe o arquivo de estilo para a página
+import "../styles/AlbumReview.scss";
 
 export default function AlbumReview() {
-  const { id } = useParams(); // Obtém o ID do álbum da URL
+  const { id } = useParams();
   const [album, setAlbum] = useState(null);
   const [ratings, setRatings] = useState({ user1: {}, user2: {} }); // Armazena as notas por usuário
   const [bestNewTracks, setBestNewTracks] = useState({ user1: "", user2: "" }); // Armazena a melhor faixa nova para cada usuário
-  const navigate = useNavigate(); // Inicializa o hook useNavigate
-
+  const navigate = useNavigate();
   const database = getDatabase();
 
   useEffect(() => {
@@ -76,11 +75,11 @@ export default function AlbumReview() {
             className="album-cover"
           />
           <h1>{album.name}</h1>
-          <h2>Artista: {album.artist}</h2>
-          <p>Data de Lançamento: {formatDate(album.releaseDate)}</p>
+          <h2>by {album.artist}</h2>
+          <p>Lançamento: {formatDate(album.releaseDate)}</p>
         </div>
       )}
-      <h2>Faixas</h2>
+      <h2>Tracklist</h2>
       <table>
         <thead>
           <tr>
