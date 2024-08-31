@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
-import AlbumCard from "../components/AlbumCard";
+import AlbumCard from "../components/AlbumCard/AlbumCard";
 
 import "../styles/Home.scss";
 
@@ -39,21 +39,35 @@ export default function Home() {
   return (
     <main className="d-flex flex-column align-items-start">
       <header className="d-flex flex-column align-items-start gap-2 home-header">
-        <h1 className="text-left text-bold">Bem-vindo ao app</h1>
-        <h1 className="text-left text-bold">Reviews avançadas</h1>
-        <h3 className="text-left">
+        <div className="d-flex flex-column align-items-start">
+          <h1 className="text-left text-bold">Bem-vindo ao app</h1>
+          <h1 className="text-left text-bold color-primary">
+            Reviews avançadas
+          </h1>
+        </div>
+        <h5 className="text-left">
           Uma plataforma para avaliação de álbuns musicais
-        </h3>
-        <button onClick={navigateToAddAlbum} className="add-album-btn">
-          Ver todas as reviews
-        </button>
+        </h5>
+
+        <div className="d-flex align-items-center gap-2">
+          <button onClick={navigateToAddAlbum} className="button-secondary">
+            + Todas as reviews
+          </button>
+          <button onClick={navigateToAddAlbum} className="button-primary">
+            + Novo registro
+          </button>
+        </div>
       </header>
 
       <section className="d-flex align-items-center justify-content-between w-100">
-        <h4>Últimos lançamentos</h4>
-        <button onClick={navigateToAddAlbum} className="button-primary">
-          + Novo álbum
-        </button>
+        <h6>Últimos lançamentos</h6>
+
+        <p className="d-flex align-items-center gap-1">
+          +
+          <a hrf="#" onClick={navigateToAddAlbum} className="">
+            Todas as reviews
+          </a>
+        </p>
       </section>
 
       <div className="album-grid">

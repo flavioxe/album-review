@@ -31,37 +31,59 @@ h1, h2, h3, h4, h5, h6, span, p, label, textarea, a {
 }
 
 h1 {
-  font-size: 1.5em;
-  line-height: 110%;
+  font-size: 2.027rem;
+  line-height: 38px;
 }
 
 h2 {
-  font-size: 1.2em;
-  line-height: 110%;
+  font-size: 1.802rem;
+  line-height: 34px;
 }
 
 h3 {
-  font-size: 1rem;
-  line-height: 110%;
+  font-size: 1.602rem;
+  line-height: 32px;
 }
 
 h4 {
-  font-size: 0.875rem;
-  line-height: 110%;
+  font-size: 1.424rem;
+  line-height: 26px;
+}
+
+h5 {
+  font-size: 1.266rem;
+  line-height: 24px;
+}
+
+p, span, a, label {
+  font-size: 1rem;
+  line-height: 20px;
+}
+
+small {
+  font-size: 0.889rem;
+  line-height: 16px;
+}
+
+button {
+  font-size: 0.889rem;
+  line-height: 16px;
+  font-weight: medium;
 }
 
 a {
-  text-decoration: inherit;
+  text-decoration: underline;
+  color: variables.$secondary-color;
 
   &:hover {
-    color: #807EBF;
+    color: variables.$primary-color;
   }
 }
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.25em 0.65rem;
+  padding: 0.5rem 0.5rem;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -81,7 +103,12 @@ button {
 
 .button-primary {
   background-color: variables.$primary-color;
-  color: variables.$secondary-color;
+  color: variables.$white-color;
+}
+
+.button-secondary {
+  background-color: variables.$secondary-color;
+  color: variables.$white-color;
 }
 
 .w-20 {
@@ -98,4 +125,12 @@ button {
 
 .text-left {
   text-align: left;
+}
+
+.color-primary {
+  color: variables.$primary-color;
+}
+
+.color-gray {
+  color: variables.$gray-color;
 }

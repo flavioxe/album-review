@@ -62,9 +62,10 @@ export default function AlbumForm() {
       setCover("");
       setGenre("");
       setTracks(["", "", "", ""]);
+      alert("Lacre!");
     } catch (error) {
       console.error("Erro:", error);
-      alert("Houve um erro ao adicionar o álbum. Tente novamente.");
+      alert("Flop! Tenta dnv bibi");
     }
   };
 
@@ -149,7 +150,7 @@ export default function AlbumForm() {
         <input
           type="text"
           id="genre"
-          value={cover}
+          value={genre}
           onChange={(e) => setGenre(e.target.value)}
           placeholder=""
           className="w-100"
