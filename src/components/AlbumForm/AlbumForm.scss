@@ -1,7 +1,22 @@
 @use '../../styles/variables.scss';
 
-// .app-container {
-//     background-color: variables.$background-color;
-//     color: #333;
-//     padding: 20px;
-// }
+.divsion-mark {
+    width: 100%;
+    height: 1px; 
+    background-color: variables.$third-color; 
+    margin: 1rem 0; 
+}
+
+.box-album-styles {
+    height: 7.375rem;
+    width: 100%;
+    border-radius: 12px;
+    background-color: variables.$secondary-color;
+
+    .cover-image {
+        height: 5rem;
+        width: 5rem;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+}

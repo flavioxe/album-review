@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import HeaderPages from "../components/HeaderPages/HeaderPAges";
 import AlbumForm from "../components/AlbumForm/AlbumForm";
 
 export default function AddAlbum() {
@@ -10,18 +11,9 @@ export default function AddAlbum() {
   };
 
   return (
-    <div className="d-flex flex-column align-items-start gap-3">
-      <h2>Cadastrar Álbum</h2>
+    <div className="d-flex flex-column align-items-start gap-3 w-100">
+      <HeaderPages text="Novo registro" />
       <AlbumForm onAddAlbum={handleAddAlbum} />
-
-      <h4>Álbuns cadastrados</h4>
-      <ul>
-        {albums.map((album) => (
-          <li key={album.id}>
-            {album.name} - {album.artist}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

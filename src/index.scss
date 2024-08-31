@@ -101,6 +101,23 @@ button {
   }
 }
 
+label {
+  font-weight: 600;
+}
+
+input {
+  height: 2.5rem;
+  padding: 0 1rem;
+  background-color: transparent;
+  color: variables.$secondary-color;
+  border: 1px solid variables.$third-color;
+  border-radius: 6px;
+
+  &:focus, &:focus-visible {
+    border: 1px solid variables.$third-color;
+  }
+}
+
 .button-primary {
   background-color: variables.$primary-color;
   color: variables.$white-color;
@@ -109,6 +126,20 @@ button {
 .button-secondary {
   background-color: variables.$secondary-color;
   color: variables.$white-color;
+}
+
+.button-outline {
+  background-color: transparent;
+  color: variables.$secondary-color;
+  border: 1px solid variables.$secondary-color;
+}
+
+.w-5 {
+  width: 5%;
+}
+
+.w-10 {
+  width: 10%;
 }
 
 .w-20 {
@@ -125,6 +156,12 @@ button {
 
 .text-left {
   text-align: left;
+}
+
+.text-limit {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .color-primary {

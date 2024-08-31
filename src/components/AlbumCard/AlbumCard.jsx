@@ -16,11 +16,11 @@ export default function AlbumCard({ album }) {
   return (
     <div className="d-flex flex-column gap-2 album-card" onClick={handleClick}>
       <div>
-        <small className="color-gray">Álbum</small>
-        <p>
+        {/* <small className="color-gray">Álbum</small> */}
+        <p className="text-limit">
           <strong>{album.name}</strong>
         </p>
-        <small>{album.artist}</small>
+        <small className="text-limit">{album.artist}</small>
       </div>
 
       <img

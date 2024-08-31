@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
-import AlbumCard from "../components/AlbumCard/AlbumCard";
+import Latests from "../components/Latests/Latests";
 
 import "../styles/Home.scss";
 
@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <main className="d-flex flex-column align-items-start">
-      <header className="d-flex flex-column align-items-start gap-2 home-header">
+      <header className="d-flex flex-column align-items-start gap-3 home-header">
         <div className="d-flex flex-column align-items-start">
           <h1 className="text-left text-bold">Bem-vindo ao app</h1>
           <h1 className="text-left text-bold color-primary">
@@ -51,7 +51,7 @@ export default function Home() {
 
         <div className="d-flex align-items-center gap-2">
           <button onClick={navigateToAddAlbum} className="button-secondary">
-            + Todas as reviews
+            Todas as reviews
           </button>
           <button onClick={navigateToAddAlbum} className="button-primary">
             + Novo registro
@@ -59,24 +59,7 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="d-flex align-items-center justify-content-between w-100">
-        <h6>Últimos lançamentos</h6>
-
-        <p className="d-flex align-items-center gap-1">
-          +
-          <a hrf="#" onClick={navigateToAddAlbum} className="">
-            Todas as reviews
-          </a>
-        </p>
-      </section>
-
-      <div className="album-grid">
-        {albums.length === 0 ? (
-          <p>Nenhum álbum cadastrado ainda.</p>
-        ) : (
-          albums.map((album) => <AlbumCard key={album.id} album={album} />)
-        )}
-      </div>
+      <Latests albums={albums} />
     </main>
   );
 }
