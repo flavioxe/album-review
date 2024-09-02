@@ -1,0 +1,8 @@
+@use '../../styles/variables.scss';
+
+.division-mark {
+    width: 100%;
+    height: 1px; 
+    background-color: variables.$third-color; 
+    margin: 1rem 0; 
+}

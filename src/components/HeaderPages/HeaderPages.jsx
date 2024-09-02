@@ -1,7 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
 export default function HeaderPages({ text }) {
+  const navigate = useNavigate();
+
+  const navigateToHome = () => {
+    navigate("/");
+  };
+
   return (
     <header className="d-flex align-items-center justify-content-between w-100">
-      <button className="d-flex align-items-center gap-2 button-outline">
+      <button
+        onClick={navigateToHome}
+        className="d-flex align-items-center gap-2 button-outline"
+      >
         <svg
           width="6"
           height="11"

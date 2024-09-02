@@ -3,6 +3,8 @@ import { useAlbum } from "../../context/AlbumContext";
 import { ref, set } from "firebase/database";
 import { database } from "../../firebase";
 
+import DivisionMark from "../DivisionMark/DivisionMark";
+
 import "./AlbumForm.scss";
 
 export default function AlbumForm() {
@@ -83,6 +85,7 @@ export default function AlbumForm() {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="title"
             className="w-100"
             required
           />
@@ -95,6 +98,7 @@ export default function AlbumForm() {
             id="artist"
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
+            placeholder="artist"
             className="w-100"
             required
           />
@@ -112,7 +116,7 @@ export default function AlbumForm() {
           />
         </div>
 
-        <div className="divsion-mark"></div>
+        <DivisionMark />
 
         <p className="mb-2">
           <strong>Estilização</strong>
@@ -134,7 +138,7 @@ export default function AlbumForm() {
             id="cover"
             value={cover}
             onChange={(e) => setCover(e.target.value)}
-            placeholder="Insira a URL da imagem da capa"
+            placeholder="URL da imagem da capa"
             className="w-100"
             required
           />
@@ -159,12 +163,12 @@ export default function AlbumForm() {
             id="genre"
             value={genre}
             onChange={(e) => setGenre(e.target.value)}
-            placeholder=""
+            placeholder="genre"
             className="w-100"
           />
         </div>
 
-        <div className="divsion-mark"></div>
+        <DivisionMark />
 
         <p className="mb-2">
           <strong>Lista de músicas</strong>
@@ -194,7 +198,7 @@ export default function AlbumForm() {
           +1 música
         </button>
 
-        <div className="divsion-mark"></div>
+        <DivisionMark />
 
         <button type="submit" className="button-primary w-100">
           Cadastrar álbum

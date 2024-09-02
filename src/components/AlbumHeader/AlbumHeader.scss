@@ -1,0 +1,36 @@
+@use '../../styles/variables.scss';
+
+.box-album-header {
+    height: 7.375rem;
+    width: 100%;
+    border-radius: 12px;
+    background-color: variables.$secondary-color;
+
+    position: relative;
+
+    .cover-image {
+        position: absolute;
+        left: 1.5rem;
+        top: 1.5rem;
+        height: 7.688rem;
+        width: 7.688rem;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+}
+
+.album-details {
+    margin-top: 2.5rem;
+
+    .album-cover {
+        width: 200px;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .ratings,
+    .best-new-tracks {
+        margin-top: 10px;
+    }
+}
