@@ -3,15 +3,38 @@ import { useParams } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
 import HeaderPages from "../components/HeaderPages/HeaderPages";
 import AlbumHeader from "../components/AlbumHeader/AlbumHeader";
+import DivisionMark from "../components/DivisionMark/DivisionMark";
 
 import "../styles/AlbumReview.scss";
 
 export default function AlbumReview() {
   const { id } = useParams();
   const [album, setAlbum] = useState(null);
-  const [ratings, setRatings] = useState({ user1: {}, user2: {} }); // Armazena as notas por usuário
-  const [bestNewTracks, setBestNewTracks] = useState({ user1: "", user2: "" }); // Armazena a melhor faixa nova para cada usuário
+  const [ratings, setRatings] = useState({ user1: {}, user2: {} });
+  const [averages, setAverages] = useState({ user1: "", user2: "" });
+  const [bestNewTracks, setBestNewTracks] = useState({ user1: "", user2: "" });
+  const [comments, setComments] = useState({ user1: "", user2: "" });
   const database = getDatabase();
+
+  const setAverageColor = (average) => {
+    let color = "color-secondary";
+
+    if (average !== "N/A") {
+      if (average >= 6) {
+        color = "color-success";
+      } else if (average >= 5) {
+        color = "color-warning";
+      } else {
+        color = "color-danger";
+      }
+    }
+
+    return (
+      <span className={color}>
+        <strong>{average}</strong>
+      </span>
+    );
+  };
 
   useEffect(() => {
     const albumRef = ref(database, `albums/${id}`);
@@ -19,18 +42,13 @@ export default function AlbumReview() {
       const data = snapshot.val();
       if (data) {
         setAlbum(data);
-        setRatings(data.ratings || { user1: {}, user2: {} }); // Atualiza o estado de ratings
-        setBestNewTracks(data.bestNewTracks || { user1: "", user2: "" }); // Atualiza o estado de bestNewTracks
+        setRatings(data.ratings || { user1: {}, user2: {} });
+        setAverages(data.averages || { user1: "", user2: "" });
+        setBestNewTracks(data.bestNewTracks || { user1: "", user2: "" });
+        setComments(data.comments || { user1: "", user2: "" });
       }
     });
   }, [id, database]);
-
-  const calculateAverage = (user) => {
-    const userRatings = Object.values(ratings[user]);
-    const total = userRatings.reduce((acc, rating) => acc + (rating || 0), 0);
-    const count = userRatings.filter((rating) => rating !== null).length;
-    return count > 0 ? (total / count).toFixed(1) : "N/A";
-  };
 
   return (
     <section className="d-flex flex-column align-items-start gap-3 w-100">
@@ -38,55 +56,94 @@ export default function AlbumReview() {
       {album ? <AlbumHeader album={album} /> : <p>Carregando álbum...</p>}
 
       <div className="box-album-details w-100">
-        <div className="table">
-          <div className="table-header">
-            <div className="table-row">
-              <div className="table-cell">Tracklist</div>
-              <div className="table-cell text-center">Ducardo</div>
-              <div className="table-cell text-center">Flavioxe</div>
-            </div>
-          </div>
-          <div className="table-body">
-            {album?.tracks.map((track, index) => (
-              <div className="table-row" key={index}>
-                <div className="table-cell">{track.title}</div>
-                <div className="table-cell text-center">
-                  {album?.ratings.user1[index]?.rate || "N/A"}
-                </div>
-                <div className="table-cell text-center">
-                  {album?.ratings.user2[index]?.rate || "N/A"}
-                </div>
-              </div>
-            ))}
-            <div className="table-row">
-              <div className="table-cell color-primary">
-                <strong>Média geral</strong>
-              </div>
-              <div className="table-cell text-center">
-                <strong>{calculateAverage("user1")}</strong>
-              </div>
-              <div className="table-cell text-center">
-                <strong>{calculateAverage("user2")}</strong>
-              </div>
-            </div>
-          </div>
+        <div className="table-row">
+          <small className="table-cell text-left">
+            <strong>Tracklist</strong>
+          </small>
+          <small className="table-cell text-center">Ducardo</small>
+          <small className="table-cell text-center">Flavioxe</small>
         </div>
 
-        <h6 className="text-left mb-2">
-          <strong>Best new track</strong>
-        </h6>
-        <section className="d-flex flex-column align-items-start gap-2 w-100">
+        {album?.tracks.map((track, index) => (
+          <div className="table-row" key={index}>
+            <small className="table-cell text-left">
+              <strong>{track.title}</strong>
+            </small>
+            <small className="table-cell text-center">
+              {album.ratings ? album?.ratings.user1[index]?.rate : "-"}
+            </small>
+            <small className="table-cell text-center">
+              {album.ratings ? album?.ratings.user2[index]?.rate : "-"}
+            </small>
+          </div>
+        ))}
+
+        <div className="table-row">
+          <small className="table-cell text-left color-primary">
+            <strong>Média geral</strong>
+          </small>
+          <small className="table-cell text-center">
+            <strong>{setAverageColor(averages.user1 || "-")}</strong>
+          </small>
+          <small className="table-cell text-center">
+            <strong>{setAverageColor(averages.user2 || "-")}</strong>
+          </small>
+        </div>
+
+        <DivisionMark />
+
+        <div className="d-flex align-items-center gap-3 mb-3">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 12.616L12.944 15.6L11.632 9.97602L16 6.19202L10.248 5.70402L8 0.400024L5.752 5.70402L0 6.19202L4.368 9.97602L3.056 15.6L8 12.616Z"
+              fill="#BD2626"
+            />
+          </svg>
+          <h6 className="text-left">
+            <strong>Best new track</strong>
+          </h6>
+        </div>
+
+        <section className="d-flex flex-column align-items-start gap-3 w-100">
           <div className="d-flex align-items-center justify-content-between w-100">
-            <p>
+            <small>
               <strong>Ducardo</strong>
-            </p>
-            <p>{bestNewTracks.user1 || "-"}</p>
+            </small>
+            <small>{bestNewTracks.user1 || "-"}</small>
           </div>
           <div className="d-flex align-items-center justify-content-between w-100">
-            <p>
+            <small>
               <strong>Flavioxe</strong>
-            </p>
-            <p>{bestNewTracks.user2 || "-"}</p>
+            </small>
+            <small>{bestNewTracks.user2 || "-"}</small>
+          </div>
+        </section>
+        <DivisionMark />
+
+        <div className="d-flex align-items-center gap-3 mb-3">
+          <h6 className="text-left">
+            <strong>Comentários</strong>
+          </h6>
+        </div>
+
+        <section className="d-flex flex-column align-items-start gap-3 w-100">
+          <div className="d-flex align-items-center justify-content-between w-100">
+            <small>
+              <strong>Ducardo</strong>
+            </small>
+            <small>{comments.user1 || "-"}</small>
+          </div>
+          <div className="d-flex align-items-center justify-content-between w-100">
+            <small>
+              <strong>Flavioxe</strong>
+            </small>
+            <small>{comments.user2 || "-"}</small>
           </div>
         </section>
       </div>

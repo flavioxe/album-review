@@ -13,10 +13,29 @@ export default function AlbumCard({ album }) {
     navigate(`/album-review/${album.id}`);
   };
 
+  const setAverageColor = (average) => {
+    let color = "color-secondary";
+
+    if (average !== "N/A") {
+      if (parseFloat(average) >= 6) {
+        color = "color-success";
+      } else if (parseFloat(average) >= 5) {
+        color = "color-warning";
+      } else {
+        color = "color-danger";
+      }
+    }
+
+    return (
+      <small className={color}>
+        <strong>{average}</strong>
+      </small>
+    );
+  };
+
   return (
     <div className="d-flex flex-column gap-2 album-card" onClick={handleClick}>
       <div>
-        {/* <small className="color-gray">Álbum</small> */}
         <p className="text-limit">
           <strong>{album.name}</strong>
         </p>
@@ -30,17 +49,17 @@ export default function AlbumCard({ album }) {
       />
 
       <div className="album-card-footer">
-        <div className="d-flex align-items-center gap-1">
+        <div className="d-flex align-items-center gap-2">
           <img src={ducardo} alt="Ducardo avatar" />
           <small>
-            <strong>10</strong>
+            {album.averages ? setAverageColor(album.averages.user1) : "-"}{" "}
           </small>
         </div>
 
-        <div className="d-flex align-items-center gap-1">
+        <div className="d-flex align-items-center gap-2">
           <img src={flavioxe} alt="Flavioxe avatar" />
           <small>
-            <strong>10</strong>
+            {album.averages ? setAverageColor(album.averages.user2) : "-"}{" "}
           </small>
         </div>
       </div>
@@ -55,5 +74,9 @@ AlbumCard.propTypes = {
     artist: PropTypes.string.isRequired,
     cover: PropTypes.string.isRequired,
     releaseDate: PropTypes.string.isRequired,
+    averages: PropTypes.shape({
+      user1: PropTypes.string,
+      user2: PropTypes.string,
+    }),
   }).isRequired,
 };

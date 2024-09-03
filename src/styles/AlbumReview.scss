@@ -1,51 +1,16 @@
 @use '../styles/variables.scss';
 
 .box-album-details {
-    border-radius: 16px;
-
-    .table {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-      }
-      
-      .table-header {
-        font-weight: bold;
-        background-color: #f0f0f0; /* Cor de fundo do cabeçalho */
-      }
-      
-      .table-body {
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .table-row {
-        display: flex;
-        justify-content: space-between; /* Distribui as células igualmente */
-        padding: 10px;
-        border-bottom: 1px solid #ccc; /* Linha de separação entre as linhas */
-      }
-      
-      .table-cell {
-        flex: 1; /* Faz com que as células ocupem o mesmo espaço */
-        padding: 5px;
-      }
-      
-      .text-center {
-        text-align: center; /* Centraliza o texto */
-      }
-      
-      .color-primary {
-        color: #007bff; /* Cor primária */
-      }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-
-        th, td {
-            padding: 1rem 0;
-            text-align: left;
-        }
-    }
+  border-radius: 16px;
+  
+  .table-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+  
+  .table-cell {
+    flex: 1;
+  }
 }
