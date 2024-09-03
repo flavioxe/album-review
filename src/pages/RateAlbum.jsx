@@ -11,6 +11,7 @@ export default function RateAlbum() {
   const [ratings, setRatings] = useState({ user1: [], user2: [] });
   const [bestNewTracks, setBestNewTracks] = useState({ user1: "", user2: "" });
   const [comments, setComments] = useState({ user1: "", user2: "" });
+
   const navigate = useNavigate();
   const database = getDatabase();
 
@@ -21,22 +22,19 @@ export default function RateAlbum() {
       if (data) {
         setAlbum(data);
         const initialRatings = {
-          user1:
-            data.ratings?.user1 ||
-            Array(data.tracks.length).fill({ rate: null }),
-          user2:
-            data.ratings?.user2 ||
-            Array(data.tracks.length).fill({ rate: null }),
+          user1: data.tracks.map((track) => {
+            const existingRating = data.ratings?.user1?.find(
+              (r) => r.title === track.title
+            );
+            return existingRating || { title: track.title, rate: null };
+          }),
+          user2: data.tracks.map((track) => {
+            const existingRating = data.ratings?.user2?.find(
+              (r) => r.title === track.title
+            );
+            return existingRating || { title: track.title, rate: null };
+          }),
         };
-
-        data.tracks.forEach((track) => {
-          if (!initialRatings.user1.some((r) => r.title === track.title)) {
-            initialRatings.user1.push({ title: track.title, rate: null });
-          }
-          if (!initialRatings.user2.some((r) => r.title === track.title)) {
-            initialRatings.user2.push({ title: track.title, rate: null });
-          }
-        });
 
         setRatings(initialRatings);
         setBestNewTracks(data.bestNewTracks || { user1: "", user2: "" });
@@ -71,24 +69,22 @@ export default function RateAlbum() {
   const calculateAverage = (user) => {
     const userRatings = ratings[user]
       .map((r) => r.rate)
-      .filter((rate) => rate !== null && rate !== undefined); // Filter out null and undefined rates
+      .filter((rate) => rate !== null && rate !== undefined);
 
     const total = userRatings.reduce((acc, rating) => acc + rating, 0);
     const count = userRatings.length;
+    const average = count > 0 ? (total / count).toFixed(2) : "N/A";
 
-    // Check if count is greater than 0 before calculating average
-    const average = count > 0 ? (total / count).toFixed(2) : "N/A"; // Use toFixed(2) for two decimal places
-
-    return average; // Return the average as a string
+    return average;
   };
 
   const setAverageColor = (average) => {
     let color = "color-secondary";
 
     if (average !== "N/A") {
-      if (average >= 6) {
+      if (parseFloat(average) >= 6) {
         color = "color-success";
-      } else if (average >= 5) {
+      } else if (parseFloat(average) >= 5) {
         color = "color-warning";
       } else {
         color = "color-danger";
@@ -96,34 +92,28 @@ export default function RateAlbum() {
     }
 
     return (
-      <small className={color}>
+      <span className={color}>
         <strong>{average}</strong>
-      </small>
+      </span>
     );
   };
 
   const handleSubmit = async () => {
-    // Função para remover propriedades indesejadas
     const sanitizeData = (data) => {
-      const { $$typeof, ...sanitized } = data; // Remove a propriedade $$typeof
+      const { $$typeof, ...sanitized } = data;
       return sanitized;
     };
 
-    // Cria um objeto com os dados a serem salvos
     const albumData = {
       ratings: {
-        user1: ratings.user1
-          .map((rating) => ({
-            title: rating.title,
-            rate: rating.rate !== undefined ? rating.rate : null,
-          }))
-          .filter((rating) => rating.rate !== undefined),
-        user2: ratings.user2
-          .map((rating) => ({
-            title: rating.title,
-            rate: rating.rate !== undefined ? rating.rate : null,
-          }))
-          .filter((rating) => rating.rate !== undefined),
+        user1: ratings.user1.map((rating) => ({
+          title: rating.title,
+          rate: rating.rate !== undefined ? rating.rate : null,
+        })),
+        user2: ratings.user2.map((rating) => ({
+          title: rating.title,
+          rate: rating.rate !== undefined ? rating.rate : null,
+        })),
       },
       bestNewTracks: {
         user1: bestNewTracks.user1,
@@ -134,15 +124,15 @@ export default function RateAlbum() {
         user2: comments.user2,
       },
       averages: {
-        user1: calculateAverage("user1"), // This should now return a simple string
-        user2: calculateAverage("user2"), // This should now return a simple string
+        user1: calculateAverage("user1"),
+        user2: calculateAverage("user2"),
       },
     };
 
     try {
       const albumRef = ref(database, `albums/${id}`);
-      const sanitizedAlbum = sanitizeData(album); // Sanitiza o objeto album
-      await set(albumRef, { ...sanitizedAlbum, ...albumData }); // Salva os dados
+      const sanitizedAlbum = sanitizeData(album);
+      await set(albumRef, { ...sanitizedAlbum, ...albumData });
       alert("Avaliações salvas com sucesso!");
       navigate(`/album-review/${id}`);
     } catch (error) {
@@ -165,43 +155,37 @@ export default function RateAlbum() {
           <small className="table-cell text-center">Flavioxe</small>
         </div>
 
-        {ratings.user1.map((rating, index) => (
-          <div className="table-row" key={index}>
-            <small className="table-cell text-left">
-              <strong>{rating.title}</strong>
-            </small>
-            <div className="table-cell text-center">
-              <input
-                type="number"
-                min="0"
-                max="10"
-                value={
-                  ratings.user1[index]?.rate !== undefined
-                    ? ratings.user1[index].rate
-                    : ""
-                } // Ensure it defaults to an empty string
-                onChange={(e) =>
-                  handleRatingChange(index, "user1", Number(e.target.value))
-                }
-              />
+        {album &&
+          album.tracks.map((track, index) => (
+            <div className="table-row" key={index}>
+              <small className="table-cell text-left">
+                <strong>{track.title}</strong>
+              </small>
+              <div className="table-cell text-center">
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  value={ratings.user1[index]?.rate || ""}
+                  onChange={(e) =>
+                    handleRatingChange(index, "user1", Number(e.target.value))
+                  }
+                />
+              </div>
+              <div className="table-cell text-center">
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  value={ratings.user2[index]?.rate || ""}
+                  onChange={(e) =>
+                    handleRatingChange(index, "user2", Number(e.target.value))
+                  }
+                />
+              </div>
             </div>
-            <div className="table-cell text-center">
-              <input
-                type="number"
-                min="0"
-                max="10"
-                value={
-                  ratings.user2[index]?.rate !== undefined
-                    ? ratings.user2[index].rate
-                    : ""
-                } // Ensure it defaults to an empty string
-                onChange={(e) =>
-                  handleRatingChange(index, "user2", Number(e.target.value))
-                }
-              />
-            </div>
-          </div>
-        ))}
+          ))}
+
         <div className="table-row">
           <small className="table-cell text-left color-primary">
             <strong>Média geral</strong>
@@ -234,7 +218,7 @@ export default function RateAlbum() {
           </h6>
         </div>
 
-        <section className="d-flex flex-column gap-3 w-100">
+        <section className="d-flex flex-column align-items-start gap-3 w-100">
           <div className="d-flex flex-column align-items-start gap-1 w-100">
             <label>Ducardo</label>
             <input
