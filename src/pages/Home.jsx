@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
+import Ranking from "../components/Ranking/Ranking";
 import Latests from "../components/Latests/Latests";
+import DivisionMark from "../components/DivisionMark/DivisionMark";
 
 import "../styles/Home.scss";
 
@@ -59,6 +61,8 @@ export default function Home() {
         </div>
       </header>
 
+      <Ranking albums={albums} />
+      {/* <DivisionMark /> */}
       <Latests albums={albums} />
     </main>
   );
