@@ -133,17 +133,17 @@ export default function AlbumReview() {
         </div>
 
         <section className="d-flex flex-column align-items-start gap-3 w-100">
-          <div className="d-flex align-items-center justify-content-between w-100">
+          <div className="d-flex flex-column align-items-start gap-2 justify-content-between w-100">
             <small>
               <strong>Ducardo</strong>
             </small>
-            <small>{comments.user1 || "-"}</small>
+            <small className="text-left">{comments.user1 || "-"}</small>
           </div>
-          <div className="d-flex align-items-center justify-content-between w-100">
+          <div className="d-flex flex-column align-items-start gap-2 justify-content-between w-100">
             <small>
               <strong>Flavioxe</strong>
             </small>
-            <small>{comments.user2 || "-"}</small>
+            <small className="text-left">{comments.user2 || "-"}</small>
           </div>
         </section>
       </div>

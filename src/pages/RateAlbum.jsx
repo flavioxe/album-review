@@ -82,7 +82,7 @@ export default function RateAlbum() {
     let color = "color-secondary";
 
     if (average !== "N/A") {
-      if (parseFloat(average) >= 6) {
+      if (parseFloat(average) >= 8) {
         color = "color-success";
       } else if (parseFloat(average) >= 5) {
         color = "color-warning";
@@ -151,8 +151,38 @@ export default function RateAlbum() {
           <small className="table-cell text-left">
             <strong>Tracklist</strong>
           </small>
-          <small className="table-cell text-center">Ducardo</small>
-          <small className="table-cell text-center">Flavioxe</small>
+          <div className="d-flex align-items-center justify-content-center gap-2 table-cell text-center">
+            <small>Ducardo</small>
+            <svg
+              className="eye-icon"
+              width="12"
+              height="9"
+              viewBox="0 0 10 7"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5 1C6.72273 1 8.25909 1.96818 9.00909 3.5C8.25909 5.03182 6.72273 6 5 6C3.27727 6 1.74091 5.03182 0.990909 3.5C1.74091 1.96818 3.27727 1 5 1ZM5 0.0909119C2.72727 0.0909119 0.786364 1.50455 0 3.5C0.786364 5.49546 2.72727 6.90909 5 6.90909C7.27273 6.90909 9.21364 5.49546 10 3.5C9.21364 1.50455 7.27273 0.0909119 5 0.0909119ZM5 2.36364C5.62727 2.36364 6.13636 2.87273 6.13636 3.5C6.13636 4.12728 5.62727 4.63637 5 4.63637C4.37273 4.63637 3.86364 4.12728 3.86364 3.5C3.86364 2.87273 4.37273 2.36364 5 2.36364ZM5 1.45455C3.87273 1.45455 2.95455 2.37273 2.95455 3.5C2.95455 4.62728 3.87273 5.54546 5 5.54546C6.12727 5.54546 7.04545 4.62728 7.04545 3.5C7.04545 2.37273 6.12727 1.45455 5 1.45455Z"
+                fill="black"
+              />
+            </svg>
+          </div>
+          <div className="d-flex align-items-center justify-content-center gap-2 table-cell text-center">
+            <small>Flavioxe</small>
+            <svg
+              className="eye-icon"
+              width="12"
+              height="9"
+              viewBox="0 0 10 7"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5 1C6.72273 1 8.25909 1.96818 9.00909 3.5C8.25909 5.03182 6.72273 6 5 6C3.27727 6 1.74091 5.03182 0.990909 3.5C1.74091 1.96818 3.27727 1 5 1ZM5 0.0909119C2.72727 0.0909119 0.786364 1.50455 0 3.5C0.786364 5.49546 2.72727 6.90909 5 6.90909C7.27273 6.90909 9.21364 5.49546 10 3.5C9.21364 1.50455 7.27273 0.0909119 5 0.0909119ZM5 2.36364C5.62727 2.36364 6.13636 2.87273 6.13636 3.5C6.13636 4.12728 5.62727 4.63637 5 4.63637C4.37273 4.63637 3.86364 4.12728 3.86364 3.5C3.86364 2.87273 4.37273 2.36364 5 2.36364ZM5 1.45455C3.87273 1.45455 2.95455 2.37273 2.95455 3.5C2.95455 4.62728 3.87273 5.54546 5 5.54546C6.12727 5.54546 7.04545 4.62728 7.04545 3.5C7.04545 2.37273 6.12727 1.45455 5 1.45455Z"
+                fill="black"
+              />
+            </svg>
+          </div>
         </div>
 
         {album &&
@@ -248,7 +278,7 @@ export default function RateAlbum() {
         </h6>
         <section className="d-flex flex-column gap-3 w-100">
           <div className="d-flex flex-column align-items-start gap-1 w-100">
-            <label>Ducardo</label>
+            <label>Ducardo </label>
             <textarea
               value={comments.user1}
               onChange={(e) => handleCommentChange("user1", e)}
