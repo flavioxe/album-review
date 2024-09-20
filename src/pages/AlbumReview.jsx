@@ -20,7 +20,7 @@ export default function AlbumReview() {
     let color = "color-secondary";
 
     if (average !== "N/A") {
-      if (average >= 6) {
+      if (average >= 8) {
         color = "color-success";
       } else if (average >= 5) {
         color = "color-warning";

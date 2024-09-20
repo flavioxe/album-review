@@ -17,7 +17,7 @@ export default function AlbumCard({ album }) {
     let color = "color-secondary";
 
     if (average !== "N/A") {
-      if (parseFloat(average) >= 6) {
+      if (parseFloat(average) >= 8) {
         color = "color-success";
       } else if (parseFloat(average) >= 5) {
         color = "color-warning";
