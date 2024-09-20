@@ -82,7 +82,7 @@ export default function RateAlbum() {
     let color = "color-secondary";
 
     if (average !== "N/A") {
-      if (parseFloat(average) >= 8) {
+      if (parseFloat(average) > 7) {
         color = "color-success";
       } else if (parseFloat(average) >= 5) {
         color = "color-warning";
