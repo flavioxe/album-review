@@ -66,7 +66,7 @@ export default function AlbumReview() {
 
         {album?.tracks.map((track, index) => (
           <div className="table-row" key={index}>
-            <small className="table-cell text-left">
+            <small className="table-cell text-left track-name">
               <strong>{track.title}</strong>
             </small>
             <small className="table-cell text-center">

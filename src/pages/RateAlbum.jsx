@@ -11,6 +11,10 @@ export default function RateAlbum() {
   const [ratings, setRatings] = useState({ user1: [], user2: [] });
   const [bestNewTracks, setBestNewTracks] = useState({ user1: "", user2: "" });
   const [comments, setComments] = useState({ user1: "", user2: "" });
+  const [areGradesHidden, setAreGradesHidden] = useState({
+    user1: false,
+    user2: false,
+  });
 
   const navigate = useNavigate();
   const database = getDatabase();
@@ -98,6 +102,13 @@ export default function RateAlbum() {
     );
   };
 
+  const toggleGradeVisibility = (user) => {
+    setAreGradesHidden((prev) => ({
+      ...prev,
+      [user]: !prev[user], // Toggle visibility for the specific user
+    }));
+  };
+
   const handleSubmit = async () => {
     const sanitizeData = (data) => {
       const { $$typeof, ...sanitized } = data;
@@ -151,67 +162,121 @@ export default function RateAlbum() {
           <small className="table-cell text-left">
             <strong>Tracklist</strong>
           </small>
-          <div className="d-flex align-items-center justify-content-center gap-2 table-cell text-center">
+          <div
+            onClick={() => toggleGradeVisibility("user1")}
+            className="d-flex align-items-center justify-content-center gap-2 table-cell text-center"
+          >
             <small>Ducardo</small>
-            <svg
-              className="eye-icon"
-              width="12"
-              height="9"
-              viewBox="0 0 10 7"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5 1C6.72273 1 8.25909 1.96818 9.00909 3.5C8.25909 5.03182 6.72273 6 5 6C3.27727 6 1.74091 5.03182 0.990909 3.5C1.74091 1.96818 3.27727 1 5 1ZM5 0.0909119C2.72727 0.0909119 0.786364 1.50455 0 3.5C0.786364 5.49546 2.72727 6.90909 5 6.90909C7.27273 6.90909 9.21364 5.49546 10 3.5C9.21364 1.50455 7.27273 0.0909119 5 0.0909119ZM5 2.36364C5.62727 2.36364 6.13636 2.87273 6.13636 3.5C6.13636 4.12728 5.62727 4.63637 5 4.63637C4.37273 4.63637 3.86364 4.12728 3.86364 3.5C3.86364 2.87273 4.37273 2.36364 5 2.36364ZM5 1.45455C3.87273 1.45455 2.95455 2.37273 2.95455 3.5C2.95455 4.62728 3.87273 5.54546 5 5.54546C6.12727 5.54546 7.04545 4.62728 7.04545 3.5C7.04545 2.37273 6.12727 1.45455 5 1.45455Z"
-                fill="black"
-              />
-            </svg>
+            {areGradesHidden.user1 ? (
+              <svg
+                className="eye-icon"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 10C4 10 5.6 15 12 15M12 15C18.4 15 20 10 20 10M12 15V18M18 17L16 14.5M6 17L8 14.5"
+                  stroke="#464455"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="eye-icon"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 12C4 12 5.6 7 12 7M12 7C18.4 7 20 12 20 12M12 7V4M18 5L16 7.5M6 5L8 7.5M15 13C15 14.6569 13.6569 16 12 16C10.3431 16 9 14.6569 9 13C9 11.3431 10.3431 10 12 10C13.6569 10 15 11.3431 15 13Z"
+                  stroke="#464455"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
           </div>
-          <div className="d-flex align-items-center justify-content-center gap-2 table-cell text-center">
+          <div
+            onClick={() => toggleGradeVisibility("user2")}
+            className="d-flex align-items-center justify-content-center gap-2 table-cell text-center"
+          >
             <small>Flavioxe</small>
-            <svg
-              className="eye-icon"
-              width="12"
-              height="9"
-              viewBox="0 0 10 7"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5 1C6.72273 1 8.25909 1.96818 9.00909 3.5C8.25909 5.03182 6.72273 6 5 6C3.27727 6 1.74091 5.03182 0.990909 3.5C1.74091 1.96818 3.27727 1 5 1ZM5 0.0909119C2.72727 0.0909119 0.786364 1.50455 0 3.5C0.786364 5.49546 2.72727 6.90909 5 6.90909C7.27273 6.90909 9.21364 5.49546 10 3.5C9.21364 1.50455 7.27273 0.0909119 5 0.0909119ZM5 2.36364C5.62727 2.36364 6.13636 2.87273 6.13636 3.5C6.13636 4.12728 5.62727 4.63637 5 4.63637C4.37273 4.63637 3.86364 4.12728 3.86364 3.5C3.86364 2.87273 4.37273 2.36364 5 2.36364ZM5 1.45455C3.87273 1.45455 2.95455 2.37273 2.95455 3.5C2.95455 4.62728 3.87273 5.54546 5 5.54546C6.12727 5.54546 7.04545 4.62728 7.04545 3.5C7.04545 2.37273 6.12727 1.45455 5 1.45455Z"
-                fill="black"
-              />
-            </svg>
+            {areGradesHidden.user2 ? (
+              <svg
+                className="eye-icon"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 10C4 10 5.6 15 12 15M12 15C18.4 15 20 10 20 10M12 15V18M18 17L16 14.5M6 17L8 14.5"
+                  stroke="#464455"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="eye-icon"
+                width="25"
+                height="25"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 12C4 12 5.6 7 12 7M12 7C18.4 7 20 12 20 12M12 7V4M18 5L16 7.5M6 5L8 7.5M15 13C15 14.6569 13.6569 16 12 16C10.3431 16 9 14.6569 9 13C9 11.3431 10.3431 10 12 10C13.6569 10 15 11.3431 15 13Z"
+                  stroke="#464455"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
           </div>
         </div>
 
         {album &&
           album.tracks.map((track, index) => (
             <div className="table-row" key={index}>
-              <small className="table-cell text-left">
+              <small className="table-cell text-left track-name">
                 <strong>{track.title}</strong>
               </small>
               <div className="table-cell text-center">
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  value={ratings.user1[index]?.rate || ""}
-                  onChange={(e) =>
-                    handleRatingChange(index, "user1", Number(e.target.value))
-                  }
-                />
+                {areGradesHidden.user1 ? (
+                  <span>-</span>
+                ) : (
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    value={ratings.user1[index]?.rate || ""}
+                    onChange={(e) =>
+                      handleRatingChange(index, "user1", Number(e.target.value))
+                    }
+                  />
+                )}
               </div>
               <div className="table-cell text-center">
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  value={ratings.user2[index]?.rate || ""}
-                  onChange={(e) =>
-                    handleRatingChange(index, "user2", Number(e.target.value))
-                  }
-                />
+                {areGradesHidden.user2 ? (
+                  <span>-</span>
+                ) : (
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    value={ratings.user2[index]?.rate || ""}
+                    onChange={(e) =>
+                      handleRatingChange(index, "user2", Number(e.target.value))
+                    }
+                  />
+                )}
               </div>
             </div>
           ))}
