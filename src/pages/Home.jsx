@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
 import Ranking from "../components/Ranking/Ranking";
 import Latests from "../components/Latests/Latests";
-import DivisionMark from "../components/DivisionMark/DivisionMark";
 
 import "../styles/Home.scss";
 
@@ -15,6 +14,9 @@ export default function Home() {
 
   const navigateToAddAlbum = () => {
     navigate("/add-album");
+  };
+  const navigateToAllAlbum = () => {
+    navigate("/all-albums");
   };
 
   // Função para buscar álbuns do Firebase
@@ -40,7 +42,7 @@ export default function Home() {
 
   return (
     <main className="d-flex flex-column align-items-start">
-      <header className="d-flex flex-column align-items-start gap-3 home-header">
+      <header className="d-flex flex-column align-items-start gap-3 w-100 home-header">
         <div className="d-flex flex-column align-items-start">
           <h1 className="text-left text-bold">Bem-vindo ao app</h1>
           <h1 className="text-left text-bold color-primary">
@@ -52,7 +54,7 @@ export default function Home() {
         </h5>
 
         <div className="d-flex align-items-center gap-2">
-          <button onClick={navigateToAddAlbum} className="button-secondary">
+          <button onClick={navigateToAllAlbum} className="button-secondary">
             Todas as reviews
           </button>
           <button onClick={navigateToAddAlbum} className="button-primary">
