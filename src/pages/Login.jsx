@@ -3,20 +3,20 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../firebase"; // Ajuste o caminho conforme necessário
+import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, set } from "firebase/database";
 
 const Login = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); // Novo estado para o nome
-  const [avatar, setAvatar] = useState(""); // Novo estado para o avatar
+  const [name, setName] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
 
-  const navigate = useNavigate(); // Hook para navegação
-  const database = getDatabase(); // Instância do banco de dados
+  const navigate = useNavigate();
+  const database = getDatabase();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
