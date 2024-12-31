@@ -1,12 +1,12 @@
-// CategoryForm.js
 import React, { useState } from "react";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, get } from "firebase/database";
 
 import "./CategoryForm.scss";
 
 const CategoryForm = ({ onCategoryAdded }) => {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
+  const [order, setOrder] = useState(0); // Novo estado para o order
   const [options, setOptions] = useState([
     { text: "", image: "" },
     { text: "", image: "" },
@@ -37,6 +37,7 @@ const CategoryForm = ({ onCategoryAdded }) => {
     if (
       !categoryName ||
       !description ||
+      order === null || // Verifica se o order foi preenchido
       options.some(
         (option) => option.text.trim() === "" || option.image.trim() === ""
       )
@@ -47,9 +48,28 @@ const CategoryForm = ({ onCategoryAdded }) => {
 
     try {
       const db = getDatabase();
+
+      // Verificar se já existe uma categoria com o mesmo order
+      const categoriesRef = ref(db, "categories");
+      const snapshot = await get(categoriesRef);
+      const existingCategories = snapshot.val();
+
+      if (existingCategories) {
+        const duplicateOrderExists = Object.values(existingCategories).some(
+          (category) => category.order === order
+        );
+
+        if (duplicateOrderExists) {
+          setError("Já existe uma categoria com esse número de ordem.");
+          return;
+        }
+      }
+
+      // Se não houver duplicatas, prosseguir com o cadastro da nova categoria
       const categoryRef = ref(db, "categories/" + categoryName); // Usando o nome da categoria como chave
       await set(categoryRef, {
         description,
+        order, // Adiciona o parâmetro order
         options,
         votes: Array(options.length).fill(0), // Inicializa os votos como zero
       });
@@ -57,6 +77,7 @@ const CategoryForm = ({ onCategoryAdded }) => {
       onCategoryAdded(); // Chama a função para atualizar a lista de categorias
       setCategoryName("");
       setDescription("");
+      setOrder(0); // Reseta o order
       setOptions([
         { text: "", image: "" },
         { text: "", image: "" },
@@ -89,6 +110,15 @@ const CategoryForm = ({ onCategoryAdded }) => {
           placeholder="Breve descrição da categoria"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          required
+          className="w-100"
+        />
+
+        <input
+          type="number"
+          placeholder="Ordem (número)"
+          value={order}
+          onChange={(e) => setOrder(Number(e.target.value))} // Armazena a ordem como número
           required
           className="w-100"
         />

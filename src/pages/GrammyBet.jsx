@@ -16,7 +16,6 @@ const GrammyBet = ({ user }) => {
 
       {/* Apenas usuários logados podem cadastrar novas categorias */}
       {user && <CategoryForm onCategoryAdded={handleCategoryAdded} />}
-
       {/* Se o usuário estiver logado ou não, exibe a seção de votação */}
       <VoteSection user={user} />
     </section>

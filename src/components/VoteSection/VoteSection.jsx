@@ -20,6 +20,10 @@ const VoteSection = ({ user }) => {
           name: key,
           ...data[key],
         }));
+
+        // Ordenar categorias pelo parâmetro 'order'
+        categoriesArray.sort((a, b) => (a.order || 0) - (b.order || 0));
+
         setCategories(categoriesArray);
       } else {
         setCategories([]);
@@ -108,7 +112,7 @@ const VoteSection = ({ user }) => {
       {categories.map((category) => (
         <div
           key={category.name}
-          className="d-flex flex-column align-items-start gap-3 w-100"
+          className="d-flex flex-column align-items-start text-left gap-3 w-100"
         >
           <h3>{category.name}</h3>
           <p>{category.description}</p>
@@ -136,7 +140,7 @@ const VoteSection = ({ user }) => {
                   {/* Exibir avatares dos usuários que votaram */}
                   {option.votes && (
                     <VoteAvatars userIds={Object.keys(option.votes)} />
-                  )}{" "}
+                  )}
                 </button>
               </div>
             ))}
