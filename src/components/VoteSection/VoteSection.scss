@@ -1,0 +1,25 @@
+@use '../../styles/variables.scss';
+
+.option-button {
+    background-color: transparent;
+    border: 1px solid variables.$secondary-color; 
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .option-button:hover {
+    background-color: variables.$primary-color;
+
+    span {
+        color: variables.$white-color;
+    }
+  }
+  
+  .preview-image {
+    width: 30px; /* Tamanho da imagem pré-visualizada */
+    height: auto;
+    border-radius: 5px; /* Bordas arredondadas */
+  }
+  

@@ -1,12 +1,14 @@
+// Home.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
 import Ranking from "../components/Ranking/Ranking";
 import Latests from "../components/Latests/Latests";
+import UserAvatar from "../components/UserAvatar/UserAvatar"; // Importando o componente UserAvatar
 
 import "../styles/Home.scss";
 
-export default function Home() {
+export default function Home({ user, onLogout }) {
   const [albums, setAlbums] = useState([]);
 
   const navigate = useNavigate();
@@ -15,8 +17,17 @@ export default function Home() {
   const navigateToAddAlbum = () => {
     navigate("/add-album");
   };
+
   const navigateToAllAlbum = () => {
     navigate("/all-albums");
+  };
+
+  const navigateToGrammyBet = () => {
+    navigate("/grammy-bet"); // Navegar para a página do bolão
+  };
+
+  const navigateToLogin = () => {
+    navigate("/login"); // Navegar para a página de login
   };
 
   // Função para buscar álbuns do Firebase
@@ -37,14 +48,20 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchAlbums();
-  }, []);
+    fetchAlbums(); // Chama a função para buscar os álbuns
+  }, []); // Executa apenas uma vez na montagem
 
   return (
     <main className="d-flex flex-column align-items-start">
       <header className="d-flex flex-column align-items-start gap-3 w-100 home-header">
         <div className="d-flex flex-column align-items-start">
-          <h1 className="text-left text-bold">Bem-vindo ao app</h1>
+          {/* Exibir UserAvatar no topo */}
+          {user && <UserAvatar userId={user.uid} />} {/* Passando userId */}
+          <h1 className="text-left text-bold">
+            {user
+              ? `${user.displayName || "Usuário"}, bem-vindo ao app`
+              : "Bem-vindo ao app"}
+          </h1>
           <h1 className="text-left text-bold color-primary">
             Reviews avançadas
           </h1>
@@ -60,6 +77,27 @@ export default function Home() {
           <button onClick={navigateToAddAlbum} className="button-primary">
             + Novo registro
           </button>
+
+          {/* Botão para o bolão do grammy aparece apenas se o usuário estiver logado */}
+          {user && (
+            <button onClick={navigateToGrammyBet} className="button-primary">
+              Bolão do Grammy
+            </button>
+          )}
+
+          {/* Botão de Logout */}
+          {user && (
+            <button onClick={onLogout} className="btn btn-danger">
+              Logout
+            </button>
+          )}
+
+          {/* Botão para a página de login */}
+          {!user && ( // Exibe o botão apenas se o usuário não estiver logado
+            <button onClick={navigateToLogin} className="button-secondary">
+              Login
+            </button>
+          )}
         </div>
       </header>
 

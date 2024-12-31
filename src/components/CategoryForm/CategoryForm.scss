@@ -1,0 +1,19 @@
+.option-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .preview-image {
+    width: 50px; /* Tamanho da imagem pré-visualizada */
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px; /* Bordas arredondadas */
+    margin-left: 10px; /* Espaço entre o campo e a imagem */
+  }
+  
+  .d-flex {
+     display: flex;
+     align-items: center;
+     margin-bottom: .5rem; /* Espaço entre as opções */
+  }
+  
