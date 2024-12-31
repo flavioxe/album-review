@@ -39,6 +39,7 @@ export default function Home({ user, onLogout }) {
         const albumsArray = Object.keys(data).map((key) => ({
           id: key,
           ...data[key],
+          ratings: data[key].ratings || { user1: [], user2: [] }, // Garantir que ratings seja um objeto com arrays
         }));
         setAlbums(albumsArray);
       } else {
@@ -101,6 +102,7 @@ export default function Home({ user, onLogout }) {
         </div>
       </header>
 
+      {/* Passa os álbuns para o componente Ranking */}
       <Ranking albums={albums} />
       {/* <DivisionMark /> */}
       <Latests albums={albums} />
