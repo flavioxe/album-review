@@ -1,7 +1,6 @@
-// VoteSection.js
 import React from "react";
 import { getDatabase, ref, onValue, get, set } from "firebase/database";
-import UserAvatar from "../UserAvatar/UserAvatar"; // Importe o componente UserAvatar
+import VoteAvatars from "../VoteAvatars/VoteAvatars"; // Importando o componente VoteAvatars
 
 import "./VoteSection.scss";
 
@@ -113,33 +112,32 @@ const VoteSection = ({ user }) => {
         >
           <h3>{category.name}</h3>
           <p>{category.description}</p>
+
           <div className="d-flex flex-column align-items-start gap-1 w-100">
             {category.options.map((option, index) => (
               <div
                 key={index}
-                className="d-flex justify-content-between align-items-center"
+                className="d-flex justify-content-between align-items-center w-100"
               >
                 <button
-                  className="option-button d-flex align-items-center gap-2"
+                  className="option-button d-flex align-items-center justify-content-between gap-2"
                   onClick={() => handleVote(category.name, index)}
                 >
-                  {option.image && (
-                    <img
-                      src={option.image}
-                      alt={`Opção ${index + 1}`}
-                      className="preview-image"
-                    />
-                  )}
-                  <span>{option.text}</span>
-                </button>
-
-                {/* Exibir avatares dos usuários que votaram */}
-                <div className="d-flex align-items-center gap-1">
-                  {option.votes &&
-                    Object.keys(option.votes).map((userId) =>
-                      users[userId] ? <UserAvatar key={userId} /> : null
+                  <div className="d-flex align-items-center mb-0 gap-3">
+                    {option.image && (
+                      <img
+                        src={option.image}
+                        alt={`Opção ${index + 1}`}
+                        className="preview-image"
+                      />
                     )}
-                </div>
+                    <span>{option.text}</span>
+                  </div>
+                  {/* Exibir avatares dos usuários que votaram */}
+                  {option.votes && (
+                    <VoteAvatars userIds={Object.keys(option.votes)} />
+                  )}{" "}
+                </button>
               </div>
             ))}
           </div>

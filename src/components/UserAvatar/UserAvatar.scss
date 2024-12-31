@@ -1,7 +1,7 @@
 // UserAvatar.scss
 .user-avatar {
-    width: 50px; /* Tamanho do avatar */
-    height: 50px; /* Tamanho do avatar */
+    width: 30px; /* Tamanho do avatar */
+    // height: 50px;
     border-radius: 50%; /* Círculo */
     overflow: hidden; /* Esconde partes que saem do círculo */
     display: flex;
@@ -12,7 +12,8 @@
   
   .avatar-image {
     width: 100%;
-    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
   }
   
   .avatar-initials {
