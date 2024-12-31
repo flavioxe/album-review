@@ -1,4 +1,3 @@
-// Login.js
 import React, { useState } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -57,9 +56,9 @@ const Login = ({ setUser }) => {
   };
 
   return (
-    <div className="login-container">
-      <h2>{isLogin ? "Login" : "Register"}</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="d-flex flex-column gap-3">
+      <h2>{isLogin ? "Login" : "Cadastro"}</h2>
+      <form onSubmit={handleSubmit} className="d-flex flex-column gap-2">
         {!isLogin && ( // Campo para nome apenas durante o registro
           <input
             type="text"
@@ -78,7 +77,7 @@ const Login = ({ setUser }) => {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Senha super secreta"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -88,17 +87,21 @@ const Login = ({ setUser }) => {
         {!isLogin && (
           <input
             type="url"
-            placeholder="URL do Avatar (opcional)"
+            placeholder="URL do avatar (opcional)"
             value={avatar}
             onChange={(e) => setAvatar(e.target.value)}
           />
         )}
 
-        <button type="submit">{isLogin ? "Login" : "Register"}</button>
+        <button type="submit" className="button-primary">
+          {isLogin ? "Login" : "Cadastrar"}
+        </button>
         {error && <p className="error">{error}</p>}
       </form>
       <button onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? "Create an account" : "Already have an account?"}
+        {isLogin
+          ? "Cria uma conta bbzinha"
+          : "Já tem conta? Volta pro login boba ;*"}
       </button>
     </div>
   );

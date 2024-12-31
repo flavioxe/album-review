@@ -81,17 +81,17 @@ export default function Home({ user, onLogout }) {
 
           {/* Botão para o bolão do grammy aparece apenas se o usuário estiver logado */}
           {user && (
-            <button onClick={navigateToGrammyBet} className="button-primary">
+            <button onClick={navigateToGrammyBet} className="button-grammy">
               Bolão do Grammy
             </button>
           )}
 
           {/* Botão de Logout */}
-          {user && (
+          {/* {user && (
             <button onClick={onLogout} className="btn btn-danger">
               Logout
             </button>
-          )}
+          )} */}
 
           {/* Botão para a página de login */}
           {!user && ( // Exibe o botão apenas se o usuário não estiver logado

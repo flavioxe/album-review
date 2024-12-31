@@ -19,7 +19,8 @@
   
   .preview-image {
     width: 30px; /* Tamanho da imagem pré-visualizada */
-    height: auto;
+    height: 30px; /* Tamanho da imagem pré-visualizada */
+    object-fit: cover;
     border-radius: 5px; /* Bordas arredondadas */
   }
   
