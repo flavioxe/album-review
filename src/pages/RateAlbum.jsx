@@ -159,7 +159,7 @@ export default function RateAlbum() {
 
       <div className="box-album-details w-100">
         <div className="table-row">
-          <small className="table-cell text-left">
+          <small className="table-cell text-left track-name">
             <strong>Tracklist</strong>
           </small>
           <div

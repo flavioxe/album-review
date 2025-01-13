@@ -8,7 +8,7 @@ export default function Latests({ albums }) {
   // ordenando por data de lançamento mais recente
   const latestAlbums = albums
     .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
-    .slice(0, 6);
+    .slice(0, 14);
 
   const navigateToAllAlbum = () => {
     navigate("/all-albums");

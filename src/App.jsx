@@ -14,11 +14,12 @@ import AddAlbum from "./pages/AddAlbum";
 import AllAlbum from "./pages/AllAlbum";
 import AlbumReview from "./pages/AlbumReview";
 import RateAlbum from "./pages/RateAlbum";
-import GrammyBet from "./pages/GrammyBet"; // Importando a nova página do bolão
-import Login from "./pages/Login"; // Importando a nova página de login
-import { AlbumProvider } from "./context/AlbumContext"; // Ajuste o caminho conforme necessário
+import GrammyBet from "./pages/GrammyBet";
+import Login from "./pages/Login";
+import { AlbumProvider } from "./context/AlbumContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import FooterComopnent from "./components/Footer/FooterComponent";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -62,14 +63,9 @@ export default function App() {
             }
           />
         </Routes>
-
-        {/* Exibir botão de logout se o usuário estiver autenticado */}
-        {user && (
-          <button onClick={handleLogout} className="btn btn-danger">
-            Logout
-          </button>
-        )}
       </Router>
+
+      <FooterComopnent user={user} onLogout={handleLogout} />
     </AlbumProvider>
   );
 }

@@ -52,14 +52,14 @@ export default function AlbumCard({ album }) {
       />
 
       <div className="album-card-footer">
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 mb-0">
           <img src={ducardo} alt="Ducardo avatar" />
           <small>
             {album.averages ? setAverageColor(album.averages.user1) : "-"}{" "}
           </small>
         </div>
 
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 mb-0">
           <img src={flavioxe} alt="Flavioxe avatar" />
           <small>
             {album.averages ? setAverageColor(album.averages.user2) : "-"}{" "}
