@@ -19,6 +19,11 @@ export default function Month({ albums, selectedYear }) {
     "Janeiro",
   ];
 
+  // Obter o mês e ano atuais
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth(); // 0-11
+
   return (
     <section className={`w-100`}>
       {months.map((month, index) => {
@@ -28,18 +33,23 @@ export default function Month({ albums, selectedYear }) {
           { month: "long", year: "numeric" }
         );
 
+        // Verificar se o mês é futuro
+        const isFutureMonth =
+          selectedYear > currentYear ||
+          (selectedYear === currentYear && 11 - index > currentMonth);
+
         return (
-          <section key={index}>
+          <section key={index} className={isFutureMonth ? "d-none" : ""}>
             <p className="text-left">{month}</p>
 
             <div className="album-grid pb-3">
-              {albums[monthYearKey] && albums[monthYearKey].length > 0 ? (
-                albums[monthYearKey].map((album) => (
-                  <AlbumCard key={album.id} album={album} />
-                ))
-              ) : (
-                <small className="text-left">Sem novidades 👎🏾</small>
-              )}
+              {albums[monthYearKey] && albums[monthYearKey].length > 0
+                ? albums[monthYearKey].map((album) => (
+                    <AlbumCard key={album.id} album={album} />
+                  ))
+                : !isFutureMonth && (
+                    <small className="text-left">Sem novidades 👎🏾</small>
+                  )}
             </div>
             <DivisionMark />
           </section>
