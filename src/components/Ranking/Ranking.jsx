@@ -3,6 +3,12 @@ import PropTypes from "prop-types";
 import RankingCard from "../RankingCard/RankingCard";
 
 export default function Ranking({ albums }) {
+  const albumsOfThisYear = albums.filter((album) => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    return new Date(album.releaseDate).getFullYear() === currentYear;
+  });
+
   // Função para calcular a média de cada álbum
   const calculateAverage = (album) => {
     if (!album.ratings || !album.ratings.user1 || !album.ratings.user2) {
@@ -25,7 +31,7 @@ export default function Ranking({ albums }) {
   };
 
   // Calcular médias para todos os álbuns
-  const albumsWithAverages = albums.map((album) => ({
+  const albumsWithAverages = albumsOfThisYear.map((album) => ({
     ...album,
     average: calculateAverage(album), // Chamar a função para calcular a média
   }));
