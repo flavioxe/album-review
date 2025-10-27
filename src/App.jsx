@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import AddAlbum from "./pages/AddAlbum";
 import AllAlbum from "./pages/AllAlbum";
 import AlbumReview from "./pages/AlbumReview";
+import EditAlbum from "./pages/EditAlbum";
 import RateAlbum from "./pages/RateAlbum";
 import GrammyBet from "./pages/GrammyBet";
 import Login from "./pages/Login";
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="/add-album" element={<AddAlbum />} />
           <Route path="/all-albums" element={<AllAlbum />} />
           <Route path="/album-review/:id" element={<AlbumReview />} />
+          <Route path="/edit-album/:id" element={<EditAlbum />} />
           <Route path="/rate-album/:id" element={<RateAlbum />} />
           {/* Rota para o bolão do Grammy */}
           <Route

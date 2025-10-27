@@ -39,7 +39,7 @@ export default function AlbumHeader({ album }) {
       </div>
 
       <div className="d-flex align-items-center gap-2 mt-4">
-        <button onClick={() => navigate("/")} className="button-outline w-50">
+        <button onClick={() => navigate(`/edit-album/${album.id}`)} className="button-outline w-50">
           Editar obra
         </button>{" "}
         <button

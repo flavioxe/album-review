@@ -6,11 +6,13 @@ import WorstRanking from "../components/WorstRanking/WorstRanking";
 import CommentsCarousel from "../components/CommentsCarousel/CommentsCarousel";
 import Latests from "../components/Latests/Latests";
 import UserAvatar from "../components/UserAvatar/UserAvatar";
+import { RankingLoader, WorstRankingLoader, CommentsLoader, LatestsLoader } from "../components/Loaders/HomeSectionLoaders";
 
 import "../styles/Home.scss";
 
 export default function Home({ user, onLogout }) {
   const [albums, setAlbums] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
   const database = getDatabase();
@@ -43,8 +45,10 @@ export default function Home({ user, onLogout }) {
           ratings: data[key].ratings || { user1: [], user2: [] }, // Garantir que ratings seja um objeto com arrays
         }));
         setAlbums(albumsArray);
+        setIsLoading(false);
       } else {
         setAlbums([]);
+        setIsLoading(false);
       }
     });
   };
@@ -93,15 +97,15 @@ export default function Home({ user, onLogout }) {
       </header>
 
       <div className="d-flex flex-wrap justify-content-between w-100">
-        <div className="ranking-section">
-          <Ranking albums={albums} />
+        <div className="ranking-section w-50 pe-2">
+          {isLoading ? <RankingLoader /> : <Ranking albums={albums} />}
         </div>
-        <div className="worst-ranking-section">
-          <WorstRanking albums={albums} />
+        <div className="worst-ranking-section w-50 ps-2">
+          {isLoading ? <WorstRankingLoader /> : <WorstRanking albums={albums} />}
         </div>
       </div>
-      <CommentsCarousel albums={albums} user={user} />
-      <Latests albums={albums} />
+      {isLoading ? <CommentsLoader /> : <CommentsCarousel albums={albums} user={user} />}
+      {isLoading ? <LatestsLoader /> : <Latests albums={albums} />}
     </main>
   );
 }
