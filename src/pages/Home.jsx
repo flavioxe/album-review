@@ -6,7 +6,12 @@ import WorstRanking from "../components/WorstRanking/WorstRanking";
 import CommentsCarousel from "../components/CommentsCarousel/CommentsCarousel";
 import Latests from "../components/Latests/Latests";
 import UserAvatar from "../components/UserAvatar/UserAvatar";
-import { RankingLoader, WorstRankingLoader, CommentsLoader, LatestsLoader } from "../components/Loaders/HomeSectionLoaders";
+import {
+  RankingLoader,
+  WorstRankingLoader,
+  CommentsLoader,
+  LatestsLoader,
+} from "../components/Loaders/HomeSectionLoaders";
 
 import "../styles/Home.scss";
 
@@ -97,14 +102,22 @@ export default function Home({ user, onLogout }) {
       </header>
 
       <div className="d-flex flex-wrap justify-content-between w-100">
-        <div className="ranking-section w-50 pe-2">
+        <div className="ranking-section pe-2">
           {isLoading ? <RankingLoader /> : <Ranking albums={albums} />}
         </div>
-        <div className="worst-ranking-section w-50 ps-2">
-          {isLoading ? <WorstRankingLoader /> : <WorstRanking albums={albums} />}
+        <div className="worst-ranking-section ps-2">
+          {isLoading ? (
+            <WorstRankingLoader />
+          ) : (
+            <WorstRanking albums={albums} />
+          )}
         </div>
       </div>
-      {isLoading ? <CommentsLoader /> : <CommentsCarousel albums={albums} user={user} />}
+      {isLoading ? (
+        <CommentsLoader />
+      ) : (
+        <CommentsCarousel albums={albums} user={user} />
+      )}
       {isLoading ? <LatestsLoader /> : <Latests albums={albums} />}
     </main>
   );
