@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CaretLeft, CaretRight, Pause, Play } from "phosphor-react";
+import { CaretLeft, CaretRight, Pause, Play, MusicNote } from "phosphor-react";
 import "./CommentsCarousel.scss";
 
 const CommentsCarousel = ({ albums }) => {
@@ -57,6 +57,16 @@ const CommentsCarousel = ({ albums }) => {
             albumName: album.name,
             albumCover: album.cover,
             primaryColor: album.primaryColor || "#ffffff",
+            bestNewTrack:
+              album.bestNewTracks &&
+              album.bestNewTracks.user1 &&
+              String(album.bestNewTracks.user1).trim()
+                ? album.bestNewTracks.user1
+                : album.bestNewTrack &&
+                  album.bestNewTrack.user1 &&
+                  String(album.bestNewTrack.user1).trim()
+                ? album.bestNewTrack.user1
+                : null,
           });
         }
 
@@ -70,6 +80,16 @@ const CommentsCarousel = ({ albums }) => {
             albumName: album.name,
             albumCover: album.cover,
             primaryColor: album.primaryColor || "#ffffff",
+            bestNewTrack:
+              album.bestNewTracks &&
+              album.bestNewTracks.user2 &&
+              String(album.bestNewTracks.user2).trim()
+                ? album.bestNewTracks.user2
+                : album.bestNewTrack &&
+                  album.bestNewTrack.user2 &&
+                  String(album.bestNewTrack.user2).trim()
+                ? album.bestNewTrack.user2
+                : null,
           });
         }
       }
@@ -199,6 +219,20 @@ const CommentsCarousel = ({ albums }) => {
               </div>
             </div>
             <div className="comment-text">"{currentComment.text}"</div>
+            {currentComment.bestNewTrack && (
+              <div className="best-new-track">
+                <div className="d-flex gap-2">
+                  <MusicNote
+                    size={16}
+                    color={getTextColorForBackground(
+                      currentComment.primaryColor || "#ffffff"
+                    )}
+                  />
+                  <span className="label">Best New Track:</span>
+                </div>
+                <span className="track">{currentComment.bestNewTrack}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

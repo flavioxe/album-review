@@ -104,6 +104,30 @@
       overflow-wrap: break-word;
       word-wrap: break-word;
     }
+
+    .best-new-track {
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: inherit;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+      }
+
+      .label {
+        font-weight: 600;
+        color: inherit;
+      }
+      .track {
+        font-style: italic;
+        color: inherit;
+      }
+    }
   }
 
   .carousel-button {
