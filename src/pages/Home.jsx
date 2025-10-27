@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
 import Ranking from "../components/Ranking/Ranking";
+import WorstRanking from "../components/WorstRanking/WorstRanking";
+import CommentsCarousel from "../components/CommentsCarousel/CommentsCarousel";
 import Latests from "../components/Latests/Latests";
 import UserAvatar from "../components/UserAvatar/UserAvatar";
 
@@ -90,7 +92,15 @@ export default function Home({ user, onLogout }) {
         </div>
       </header>
 
-      <Ranking albums={albums} />
+      <div className="d-flex flex-wrap justify-content-between w-100">
+        <div className="ranking-section">
+          <Ranking albums={albums} />
+        </div>
+        <div className="worst-ranking-section">
+          <WorstRanking albums={albums} />
+        </div>
+      </div>
+      <CommentsCarousel albums={albums} user={user} />
       <Latests albums={albums} />
     </main>
   );

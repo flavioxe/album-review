@@ -13,16 +13,23 @@ export default function AlbumCard({ album }) {
     navigate(`/album-review/${album.id}`);
   };
 
+  const getOverallAverage = () => {
+    const u1 = parseFloat(album?.averages?.user1);
+    const u2 = parseFloat(album?.averages?.user2);
+    if (isNaN(u1) || isNaN(u2)) return null; // exige médias dos dois usuários
+    return (u1 + u2) / 2;
+  };
+
   const setAverageColor = (average) => {
-    let color = "color-secondary";
+    let color = "text-secondary";
 
     if (average !== "N/A") {
       if (parseFloat(average) >= 7) {
-        color = "color-success";
+        color = "text-success";
       } else if (parseFloat(average) >= 5) {
-        color = "color-warning";
+        color = "text-warning";
       } else {
-        color = "color-danger";
+        color = "text-danger";
       }
     }
 
@@ -38,6 +45,13 @@ export default function AlbumCard({ album }) {
       className="d-flex flex-column align-items-start gap-2 album-card"
       onClick={handleClick}
     >
+      {getOverallAverage() !== null && getOverallAverage() >= 8.5 && (
+        <img
+          src="/CARIMBA.png"
+          alt="Selo CARIMBA"
+          className="carimba-stamp-absolute"
+        />
+      )}
       <div>
         <p className="text-limit">
           <strong className="text-limit">{album.name}</strong>

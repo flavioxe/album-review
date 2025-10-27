@@ -6,6 +6,18 @@ import DivisionMark from "../../components/DivisionMark/DivisionMark";
 import "./RankingCard.scss";
 
 export default function RankingCard({ album, index }) {
+  const getRatingColor = (rating) => {
+    const numRating = parseFloat(rating);
+    if (!isNaN(numRating)) {
+      if (numRating >= 7) return "text-success"; // Verde
+      if (numRating >= 5) return "text-warning"; // Amarelo
+      return "text-danger"; // Vermelho
+    }
+    return "text-secondary";
+  };
+
+  // Removido: selo CARIMBA não deve aparecer no ranking
+
   return (
     <>
       <div className="d-flex align-items-center justify-content-between w-100">
@@ -21,14 +33,14 @@ export default function RankingCard({ album, index }) {
           />
 
           <div className="d-flex flex-column align-items-start gap-1">
-            <p>
+            <p className="d-flex align-items-center gap-2">
               <strong>{album.name}</strong>
             </p>
             <small>{album.artist}</small>
           </div>
         </div>
 
-        <p>
+        <p className={getRatingColor(album.average)}>
           <strong>{album.average}</strong>{" "}
         </p>
       </div>

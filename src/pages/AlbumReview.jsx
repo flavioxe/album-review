@@ -17,15 +17,15 @@ export default function AlbumReview() {
   const database = getDatabase();
 
   const setAverageColor = (average) => {
-    let color = "color-secondary";
+    let color = "text-secondary";
 
-    if (average !== "N/A") {
-      if (average >= 7) {
-        color = "color-success";
-      } else if (average >= 5) {
-        color = "color-warning";
+    if (average !== "N/A" && average !== "-") {
+      if (parseFloat(average) >= 7) {
+        color = "text-success";
+      } else if (parseFloat(average) >= 5) {
+        color = "text-warning";
       } else {
-        color = "color-danger";
+        color = "text-danger";
       }
     }
 
@@ -69,10 +69,14 @@ export default function AlbumReview() {
             <small className="table-cell text-left track-name">
               <strong>{track.title}</strong>
             </small>
-            <small className="table-cell text-center">
+            <small className={`table-cell text-center ${album.ratings && album?.ratings.user1[index]?.rate ? 
+              (album?.ratings.user1[index]?.rate >= 7 ? "text-success" : 
+               album?.ratings.user1[index]?.rate >= 5 ? "text-warning" : "text-danger") : ""}`}>
               {album.ratings ? album?.ratings.user1[index]?.rate : "-"}
             </small>
-            <small className="table-cell text-center">
+            <small className={`table-cell text-center ${album.ratings && album?.ratings.user2[index]?.rate ? 
+              (album?.ratings.user2[index]?.rate >= 7 ? "text-success" : 
+               album?.ratings.user2[index]?.rate >= 5 ? "text-warning" : "text-danger") : ""}`}>
               {album.ratings ? album?.ratings.user2[index]?.rate : "-"}
             </small>
           </div>

@@ -1,0 +1,189 @@
+.comments-carousel {
+  width: 100%;
+
+  h2, h6 {
+    margin-bottom: 1rem;
+  }
+
+  .carousel-container {
+    position: relative;
+    border-radius: 12px;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+
+  
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #dee2e6;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      
+      &.active {
+        background-color: #007bff;
+      }
+    }
+  }
+  
+  .no-comments {
+    text-align: center;
+    padding: 1.5rem;
+    color: #6c757d;
+    font-style: italic;
+  }
+
+  .comment-card {
+    display: flex;
+    padding: 1.5rem;
+    border-radius: 8px;
+    // background-color será definido dinamicamente via inline style
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    min-height: 180px;
+    color: inherit; // herda a cor definida inline no card
+    
+    .album-cover-container {
+      flex: 0 0 120px;
+      margin-right: 1.5rem;
+      
+      .album-cover {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+    
+    .comment-content {
+      flex: 1;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 1rem;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-info {
+      h6 {
+        margin: 0;
+        font-weight: 600;
+        color: inherit;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: inherit;
+        opacity: 0.85; // leve diferença para subtítulo
+      }
+    }
+
+    .comment-text {
+      // margin-top: 1rem;
+      font-style: italic;
+      color: inherit;
+      line-height: 1.5;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+  }
+
+  .carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: #f8f9fa;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &.prev {
+      left: -15px;
+    }
+
+    &.next {
+      right: -15px;
+    }
+    
+    i {
+      font-size: 1.2rem;
+    }
+  }
+
+  .carousel-toggle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover { background-color: #f8f9fa; }
+    &:focus { outline: none; }
+
+    i { font-size: 1rem; }
+  }
+  
+  @media (max-width: 768px) {
+    .comments-row {
+      grid-template-columns: 1fr;
+    }
+    .comment-card {
+      flex-direction: column;
+      
+      .album-cover-container {
+        margin-right: 0;
+        margin-bottom: 1rem;
+        text-align: center;
+        
+        .album-cover {
+          width: 100px;
+          height: 100px;
+        }
+      }
+    }
+  }
+}
