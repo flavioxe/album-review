@@ -78,24 +78,33 @@ const CommentsCarousel = ({ albums }) => {
             userName: "Flavioxe",
             userAvatar: "/flavioxe.jpg", // Avatar padrão para Flavioxe
             albumName: album.name,
-            albumCover: album.cover,
-            primaryColor: album.primaryColor || "#ffffff",
-            bestNewTrack:
-              album.bestNewTracks &&
-              album.bestNewTracks.user2 &&
-              String(album.bestNewTracks.user2).trim()
-                ? album.bestNewTracks.user2
-                : album.bestNewTrack &&
+              albumCover: album.cover,
+              albumReleaseDate: album.releaseDate,
+              albumId: album.id,
+              primaryColor: album.primaryColor || "#ffffff",
+              bestNewTrack:
+                album.bestNewTracks &&
+                album.bestNewTracks.user2 &&
+                String(album.bestNewTracks.user2).trim()
+                  ? album.bestNewTracks.user2
+                  : album.bestNewTrack &&
                   album.bestNewTrack.user2 &&
                   String(album.bestNewTrack.user2).trim()
-                ? album.bestNewTrack.user2
-                : null,
+                  ? album.bestNewTrack.user2
+                  : null,
           });
         }
       }
     });
 
-    return comments;
+    // Ordenar por mais recente (releaseDate desc; fallback para id timestamp)
+    return comments.sort((a, b) => {
+      const da = new Date(a.albumReleaseDate);
+      const db = new Date(b.albumReleaseDate);
+      const ta = isNaN(da) ? Number(a.albumId) || 0 : da.getTime();
+      const tb = isNaN(db) ? Number(b.albumId) || 0 : db.getTime();
+      return tb - ta;
+    });
   };
 
   // Extrair comentários dos álbuns
