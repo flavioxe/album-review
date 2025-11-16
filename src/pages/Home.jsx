@@ -34,6 +34,10 @@ export default function Home({ user, onLogout }) {
     navigate("/grammy-bet");
   };
 
+  const navigateToEditProfile = () => {
+    navigate("/edit-profile");
+  };
+
   const navigateToLogin = () => {
     navigate("/login");
   };
@@ -89,6 +93,13 @@ export default function Home({ user, onLogout }) {
           {user && (
             <button onClick={navigateToGrammyBet} className="button-grammy">
               Bolão do Grammy
+            </button>
+          )}
+
+          {/* Botão de editar perfil visível quando logado */}
+          {user && (
+            <button onClick={navigateToEditProfile} className="button-secondary">
+              Editar perfil
             </button>
           )}
 

@@ -17,6 +17,7 @@ import EditAlbum from "./pages/EditAlbum";
 import RateAlbum from "./pages/RateAlbum";
 import GrammyBet from "./pages/GrammyBet";
 import Login from "./pages/Login";
+import EditProfile from "./pages/EditProfile";
 import { AlbumProvider } from "./context/AlbumContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -52,6 +53,10 @@ export default function App() {
           <Route path="/album-review/:id" element={<AlbumReview />} />
           <Route path="/edit-album/:id" element={<EditAlbum />} />
           <Route path="/rate-album/:id" element={<RateAlbum />} />
+          <Route
+            path="/edit-profile"
+            element={user ? <EditProfile user={user} /> : <Navigate to="/" />}
+          />
           {/* Rota para o bolão do Grammy */}
           <Route
             path="/grammy-bet"

@@ -56,6 +56,8 @@ const CommentsCarousel = ({ albums }) => {
             userAvatar: "/ducardo.jpg", // Avatar padrão para Ducardo
             albumName: album.name,
             albumCover: album.cover,
+            albumReleaseDate: album.releaseDate,
+            albumId: album.id,
             primaryColor: album.primaryColor || "#ffffff",
             bestNewTrack:
               album.bestNewTracks &&
