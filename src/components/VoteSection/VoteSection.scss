@@ -7,21 +7,67 @@
     cursor: pointer;
     width: 100%;
     text-align: left;
-  }
-  
-  .option-button:hover {
+}
+
+.option-button:hover {
     background-color: variables.$primary-color;
 
     span {
         color: variables.$white-color;
     }
-  }
-  
-  .preview-image {
+}
+
+.preview-image {
     width: 30px; /* Tamanho da imagem pré-visualizada */
     height: 30px; /* Tamanho da imagem pré-visualizada */
     object-fit: cover;
     border-radius: 5px; /* Bordas arredondadas */
+}
+
+/* Accordion styles */
+.accordion-item {
+  border: 1px solid variables.$third-color;
+  border-radius: 8px;
+  background: transparent;
+  overflow: hidden;
+}
+
+.accordion-header {
+  background: transparent;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+  text-align: left;
+
+  h3 {
+    color: variables.$secondary-color;
+  }
+  small {
+    color: variables.$gray-color;
+  }
+}
+
+.accordion-subheader {
+    background: transparent;
+    border: 1px solid variables.$third-color;
+    border-radius: 6px;
+    padding: 10px 12px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.accordion-content {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+}
+
+.accordion-caret {
+    color: variables.$secondary-color;
+    transition: transform 0.2s ease;
+  }
+  .accordion-caret.open {
+    transform: rotate(180deg);
   }
   
   /* Layout especial para Best Album Cover (78) */

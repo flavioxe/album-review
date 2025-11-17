@@ -1,14 +1,20 @@
 import React from "react";
 import { getDatabase, ref, onValue, get, set } from "firebase/database";
-import VoteAvatars from "../VoteAvatars/VoteAvatars"; // Importando o componente VoteAvatars
+import VoteAvatars from "../VoteAvatars/VoteAvatars";
 import EditCategoryOptions from "../CategoryForm/EditCategoryOptions";
-
+import { CaretDown } from "phosphor-react";
+import CategoryForm from "../CategoryForm/CategoryForm";
 import "./VoteSection.scss";
 
 const VoteSection = ({ user }) => {
   const [categories, setCategories] = React.useState([]);
   const [users, setUsers] = React.useState({}); // Para armazenar os dados dos usuários
   const [editingCategory, setEditingCategory] = React.useState(null);
+  const [openCategories, setOpenCategories] = React.useState({});
+  const toggleCategoryAccordion = (name) =>
+    setOpenCategories((prev) => ({ ...prev, [name]: !prev[name] }));
+  const [openCreateAccordion, setOpenCreateAccordion] = React.useState(false);
+  const toggleCreateAccordion = () => setOpenCreateAccordion((prev) => !prev);
 
   const toggleHidden = async (categoryName, nextHidden) => {
     const db = getDatabase();
@@ -136,6 +142,34 @@ const VoteSection = ({ user }) => {
         <strong>Categorias para votação</strong>
       </p>
 
+      {user && (
+        <div className="accordion-item w-100 border border-black">
+          <button
+            type="button"
+            className="accordion-header d-flex align-items-center justify-content-between w-100"
+            onClick={toggleCreateAccordion}
+          >
+            <span>
+              <strong>Cadastrar categoria</strong>
+            </span>
+            <CaretDown
+              size={18}
+              className={
+                openCreateAccordion ? "accordion-caret open" : "accordion-caret"
+              }
+            />
+          </button>
+
+          {openCreateAccordion && (
+            <div className="accordion-content">
+              <CategoryForm
+                onCategoryAdded={() => setOpenCreateAccordion(false)}
+              />
+            </div>
+          )}
+        </div>
+      )}
+
       {categories.map((category) => {
         const isCoverCategory =
           typeof category.name === "string" &&
@@ -144,119 +178,150 @@ const VoteSection = ({ user }) => {
         const isHidden = !!category.hidden;
         if (isHidden && !user) return null;
 
+        const isOpen = !!openCategories[category.name];
+
         return (
           <div
             key={category.name}
-            className="d-flex flex-column align-items-start text-left gap-3 w-100"
+            className="accordion-item w-100 border border-black"
           >
-            <h3>{category.name}</h3>
-            <p>{category.description}</p>
-            {isHidden && <small className="text-muted">Categoria escondida</small>}
+            <button
+              type="button"
+              className="accordion-header d-flex align-items-center justify-content-between w-100"
+              onClick={() => toggleCategoryAccordion(category.name)}
+            >
+              <div className="d-flex flex-column align-items-start text-left">
+                <h3 className="mb-1">{category.name}</h3>
+                {category.description && <small>{category.description}</small>}
+                {isHidden && (
+                  <small className="text-muted">Categoria escondida</small>
+                )}
+              </div>
+              <CaretDown
+                size={18}
+                className={isOpen ? "accordion-caret open" : "accordion-caret"}
+              />
+            </button>
 
-            {!isHidden && (
-              <div
-                className={
-                  isCoverCategory
-                    ? "cover-grid w-100"
-                    : "d-flex flex-column align-items-start gap-1 w-100"
-                }
-              >
-                {category.options.map((option, index) => (
-                  isCoverCategory ? (
-                    <button
-                      key={index}
-                      className="option-button cover-option d-flex flex-column align-items-start gap-2 w-100"
-                      onClick={() => handleVote(category.name, index)}
-                    >
-                      {option.image && (
-                        <img
-                          src={option.image}
-                          alt={`Capa ${index + 1}`}
-                          className="cover-image-square"
-                        />
-                      )}
-                      {option.text && (
-                        <span className="cover-caption">{option.text}</span>
-                      )}
-                      {option.votes && (
-                        <div className="w-100 d-flex justify-content-end">
-                          <VoteAvatars userIds={Object.keys(option.votes)} />
-                        </div>
-                      )}
-                    </button>
-                  ) : (
-                    <div
-                      key={index}
-                      className="d-flex justify-content-between align-items-center w-100"
-                    >
-                      <button
-                        className="option-button d-flex align-items-center justify-content-between gap-2 w-100"
-                        onClick={() => handleVote(category.name, index)}
-                      >
-                        <div className="d-flex align-items-center mb-0 gap-3">
+            {isOpen && (
+              <div className="accordion-content d-flex flex-column align-items-start gap-2 w-100">
+                {!isHidden && (
+                  <div
+                    className={
+                      isCoverCategory
+                        ? "cover-grid w-100"
+                        : "d-flex flex-column align-items-start gap-1 w-100"
+                    }
+                  >
+                    {category.options.map((option, index) =>
+                      isCoverCategory ? (
+                        <button
+                          key={index}
+                          className="option-button cover-option d-flex flex-column align-items-start gap-2 w-100"
+                          onClick={() => handleVote(category.name, index)}
+                        >
                           {option.image && (
                             <img
                               src={option.image}
-                              alt={`Opção ${index + 1}`}
-                              className="preview-image"
+                              alt={`Capa ${index + 1}`}
+                              className="cover-image-square"
                             />
                           )}
-                          <span>{option.text}</span>
+                          {option.text && (
+                            <span className="cover-caption">{option.text}</span>
+                          )}
+                          {option.votes && (
+                            <div className="w-100 d-flex justify-content-end">
+                              <VoteAvatars
+                                userIds={Object.keys(option.votes)}
+                              />
+                            </div>
+                          )}
+                        </button>
+                      ) : (
+                        <div
+                          key={index}
+                          className="d-flex justify-content-between align-items-center w-100"
+                        >
+                          <button
+                            className="option-button d-flex align-items-center justify-content-between gap-2 w-100"
+                            onClick={() => handleVote(category.name, index)}
+                          >
+                            <div className="d-flex align-items-center mb-0 gap-3">
+                              {option.image && (
+                                <img
+                                  src={option.image}
+                                  alt={`Opção ${index + 1}`}
+                                  className="preview-image"
+                                />
+                              )}
+                              <span>{option.text}</span>
+                            </div>
+                            {option.votes && (
+                              <VoteAvatars
+                                userIds={Object.keys(option.votes)}
+                              />
+                            )}
+                          </button>
                         </div>
-                        {/* Exibir avatares dos usuários que votaram */}
-                        {option.votes && (
-                          <VoteAvatars userIds={Object.keys(option.votes)} />
-                        )}
-                      </button>
-                    </div>
-                  )
-                ))}
-              </div>
-            )}
-
-            {user && (
-              <div className="d-flex align-items-center gap-2">
-                {editingCategory === category.name ? (
-                  <button
-                    type="button"
-                    className="button-outline"
-                    onClick={() => setEditingCategory(null)}
-                  >
-                    Fechar edição
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="button-secondary"
-                    onClick={() => setEditingCategory(category.name)}
-                  >
-                    {`Editar opções de ${category.name}`}
-                  </button>
+                      )
+                    )}
+                  </div>
                 )}
 
-                <button
-                  type="button"
-                  className="button-outline"
-                  onClick={() => resetCategoryVotes(category.name)}
-                >
-                  Resetar votos
-                </button>
+                {user && (
+                  <div className="d-flex flex-column align-items-start gap-2 w-100">
+                    <div className="d-flex align-items-center gap-2">
+                      <button
+                        type="button"
+                        className="button-outline"
+                        onClick={() => resetCategoryVotes(category.name)}
+                      >
+                        Resetar votos
+                      </button>
 
-                <button
-                  type="button"
-                  className="button-outline"
-                  onClick={() => toggleHidden(category.name, !isHidden)}
-                >
-                  {isHidden ? "Mostrar categoria" : "Esconder categoria"}
-                </button>
+                      <button
+                        type="button"
+                        className="button-outline"
+                        onClick={() => toggleHidden(category.name, !isHidden)}
+                      >
+                        {isHidden ? "Mostrar categoria" : "Esconder categoria"}
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="accordion-subheader d-flex align-items-center justify-content-between w-100"
+                      onClick={() =>
+                        setEditingCategory(
+                          editingCategory === category.name
+                            ? null
+                            : category.name
+                        )
+                      }
+                    >
+                      <span>{`Editar opções de ${category.name}`}</span>
+                      <CaretDown
+                        size={16}
+                        className={
+                          editingCategory === category.name
+                            ? "accordion-caret open"
+                            : "accordion-caret"
+                        }
+                      />
+                    </button>
+
+                    {editingCategory === category.name && (
+                      <div className="accordion-content">
+                        <EditCategoryOptions
+                          category={category}
+                          onClose={() => setEditingCategory(null)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-            )}
-
-            {editingCategory === category.name && (
-              <EditCategoryOptions
-                category={category}
-                onClose={() => setEditingCategory(null)}
-              />
             )}
           </div>
         );
