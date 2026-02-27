@@ -28,13 +28,13 @@ export default function RateAlbum() {
         const initialRatings = {
           user1: data.tracks.map((track) => {
             const existingRating = data.ratings?.user1?.find(
-              (r) => r.title === track.title
+              (r) => r.title === track.title,
             );
             return existingRating || { title: track.title, rate: null };
           }),
           user2: data.tracks.map((track) => {
             const existingRating = data.ratings?.user2?.find(
-              (r) => r.title === track.title
+              (r) => r.title === track.title,
             );
             return existingRating || { title: track.title, rate: null };
           }),
@@ -51,7 +51,7 @@ export default function RateAlbum() {
     setRatings((prevRatings) => ({
       ...prevRatings,
       [user]: prevRatings[user].map((rating, i) =>
-        i === index ? { ...rating, rate: value } : rating
+        i === index ? { ...rating, rate: value } : rating,
       ),
     }));
   };
@@ -282,15 +282,15 @@ export default function RateAlbum() {
           ))}
 
         <div className="table-row">
-          <small className="table-cell text-left color-primary">
+          <small className="table-cell text-left track-name color-primary">
             <strong>Média geral</strong>
           </small>
-          <small className="table-cell text-center">
+          <div className="table-cell text-center">
             {setAverageColor(calculateAverage("user1"))}
-          </small>
-          <small className="table-cell text-center">
+          </div>
+          <div className="table-cell text-center">
             {setAverageColor(calculateAverage("user2"))}
-          </small>
+          </div>
         </div>
 
         <DivisionMark />

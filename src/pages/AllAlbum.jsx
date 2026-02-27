@@ -7,6 +7,7 @@ import Month from "../components/Month/Month";
 export default function AllAlbum() {
   const [albumsByMonth, setAlbumsByMonth] = useState({});
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
+  const [years, setYears] = useState([new Date().getFullYear()]);
   const database = getDatabase();
 
   // Function to fetch albums from Firebase
@@ -20,6 +21,24 @@ export default function AllAlbum() {
           ...data[key],
         }));
         setAlbumsByMonth(groupAlbumsByMonth(albumsArray));
+
+        // compute available years from fetched albums and ensure current year is present
+        const yearSet = new Set(
+          albumsArray
+            .map((a) => {
+              if (!a.releaseDate) return null;
+              const d = new Date(a.releaseDate);
+              return Number.isNaN(d.getFullYear()) ? null : d.getFullYear();
+            })
+            .filter(Boolean),
+        );
+        yearSet.add(new Date().getFullYear());
+        const yearsArr = Array.from(yearSet).sort((a, b) => b - a);
+        setYears(yearsArr);
+        // if currently selected year is not in list, reset to current year
+        if (!yearSet.has(selectedYear)) {
+          setSelectedYear(new Date().getFullYear());
+        }
       } else {
         setAlbumsByMonth({});
       }
@@ -46,7 +65,7 @@ export default function AllAlbum() {
     // Sort albums within each month by release date (most recent first)
     Object.keys(groupedAlbums).forEach((month) => {
       groupedAlbums[month].sort(
-        (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
+        (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate),
       );
     });
 
@@ -101,8 +120,11 @@ export default function AllAlbum() {
             value={selectedYear}
             onChange={handleYearChange}
           >
-            <option value={2025}>2025</option>
-            <option value={2024}>2024</option>
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
           </select>
         </div>
       </div>

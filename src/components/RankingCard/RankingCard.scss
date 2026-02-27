@@ -1,3 +1,7 @@
+.ranking-card-general {
+    max-width: 100%;
+}
+
 .ranking-index {
     width: 0.625rem;
 }
@@ -8,4 +12,224 @@
     border-radius: 8px;
 }
 
-/* selo CARIMBA removido do ranking */
+.ranking-index-general {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-30%, -30%);
+    background-color: rgba(255, 255, 255);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.cover-wrapper {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+
+/* Hover shake animation (tremidinha) */
+@keyframes tremble {
+    0% { transform: translateX(0) rotate(0); }
+    10% { transform: translateX(-3px) rotate(-1deg); }
+    20% { transform: translateX(3px) rotate(1deg); }
+    30% { transform: translateX(-2px) rotate(-0.8deg); }
+    40% { transform: translateX(2px) rotate(0.8deg); }
+    50% { transform: translateX(-1px) rotate(-0.4deg); }
+    60% { transform: translateX(1px) rotate(0.4deg); }
+    100% { transform: translateX(0) rotate(0); }
+}
+
+.cover-wrapper {
+    transition: transform 160ms ease;
+    cursor: pointer;
+}
+
+.general-ranking-item:hover .cover-wrapper,
+.general-ranking-item:focus-within .cover-wrapper {
+    animation: tremble 600ms ease 1;
+}
+
+/* Disable hover animation on touch devices */
+@media (hover: none) {
+    .general-ranking-item:hover .cover-wrapper,
+    .general-ranking-item:focus-within .cover-wrapper {
+        animation: none;
+    }
+}
+
+.ranking-rating-badge {
+        position: absolute;
+        right: -10px;
+        bottom: -10px;
+        background: #fff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        z-index: 4;
+        font-weight: 700;
+        color: inherit;
+}
+
+@media (max-width: 480px) {
+    .ranking-rating-badge {
+        right: 0.3rem;
+        bottom: 0.3rem;
+        padding: 0.15rem 0.4rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Top-3 badge colors */
+.general-ranking-list .general-ranking-item:nth-child(1) .ranking-index-general {
+    background-color: #D4AF37; /* gold */
+    color: #111;
+    box-shadow: 0 2px 6px rgba(212,175,55,0.25);
+}
+
+.general-ranking-list .general-ranking-item:nth-child(2) .ranking-index-general {
+    background-color: #C0C0C0; /* silver */
+    color: #111;
+    box-shadow: 0 2px 6px rgba(192,192,192,0.18);
+}
+
+.general-ranking-list .general-ranking-item:nth-child(3) .ranking-index-general {
+    background-color: #CD7F32; /* bronze */
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(205,127,50,0.22);
+}
+
+.general-ranking-list {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end; /* align items by their base */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible; /* allow badges to overflow vertically */
+    padding-top: 1rem; /* reserve space so badges overflowing upwards are visible */
+    padding-bottom: 0.5rem;
+    padding-left: 1.25rem; /* prevent first badge being cut on the left */
+    padding-right: 1.25rem; /* symmetric padding */
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+}
+
+.general-ranking-item {
+    scroll-snap-align: start;
+}
+
+.ranking-album-cover-general {
+    height: 6rem;
+    width: 6rem;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.general-ranking-list .general-ranking-item .ranking-album-cover-general {
+    height: 12rem;
+    width: 12rem;
+}
+
+.general-ranking-item {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end; /* push content to bottom so bases align */
+}
+
+/* Fixed item widths to keep spacing consistent and match cover sizes */
+.general-ranking-list .general-ranking-item {
+        width: 12rem; /* desktop */
+        box-sizing: border-box;
+}
+
+.album-meta {
+        width: 100%;
+}
+
+.album-name,
+.album-artist {
+        white-space: nowrap; /* keep on single line */
+        overflow: hidden;
+        text-overflow: ellipsis; /* fallback if font-size reaches minimum */
+        display: block;
+}
+
+@media (max-width: 768px) {
+    .general-ranking-list .general-ranking-item {
+        width: 9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Align image and texts to the left on mobile */
+    .general-ranking-item {
+        align-items: flex-start; /* image aligns left */
+    }
+
+    .cover-wrapper {
+        display: block;
+    }
+
+    .album-meta {
+        width: 100%;
+        text-align: left;
+    }
+
+    .album-name,
+    .album-artist {
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 7rem;
+    }
+    
+
+    .ranking-index-general {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.9rem;
+        transform: translate(-15%, -15%);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .general-ranking-list {
+        gap: 0.75rem;
+    }
+
+    .general-ranking-list .general-ranking-item .ranking-album-cover-general {
+        height: 9rem;
+        width: 9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .general-ranking-list {
+        gap: 0.1rem;
+    }
+
+    .general-ranking-list .general-ranking-item .ranking-album-cover-general {
+        height: 7rem;
+        width: 7rem;
+    }
+
+
+    .ranking-index-general {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.9rem;
+    }
+
+    /* reduce badge overflow on very small screens to avoid clipping */
+    .ranking-index-general {
+        transform: translate(-15%, -15%);
+    }
+}

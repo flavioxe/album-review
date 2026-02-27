@@ -16,8 +16,6 @@ export default function RankingCard({ album, index }) {
     return "text-secondary";
   };
 
-  // Removido: selo CARIMBA não deve aparecer no ranking
-
   return (
     <>
       <div className="d-flex align-items-center justify-content-between w-100">
@@ -59,12 +57,12 @@ RankingCard.propTypes = {
       user1: PropTypes.arrayOf(
         PropTypes.shape({
           rate: PropTypes.number,
-        })
+        }),
       ).isRequired,
       user2: PropTypes.arrayOf(
         PropTypes.shape({
           rate: PropTypes.number,
-        })
+        }),
       ).isRequired,
     }).isRequired,
   }).isRequired,

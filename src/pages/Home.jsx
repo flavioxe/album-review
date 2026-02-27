@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
 import Ranking from "../components/Ranking/Ranking";
+import GeneralRanking from "../components/GeneralRanking/GeneralRanking";
 import WorstRanking from "../components/WorstRanking/WorstRanking";
 import CommentsCarousel from "../components/CommentsCarousel/CommentsCarousel";
 import Latests from "../components/Latests/Latests";
@@ -66,6 +67,34 @@ export default function Home({ user, onLogout }) {
     fetchAlbums();
   }, []); // Executa apenas uma vez na montagem
 
+  // Computar quantos álbuns deste ano têm avaliações válidas dos dois usuários
+  const currentYear = new Date().getFullYear();
+  const albumsOfThisYear = albums.filter((album) => {
+    if (!album.releaseDate) return false;
+    return new Date(album.releaseDate).getFullYear() === currentYear;
+  });
+
+  const isEvaluatedByBoth = (album) => {
+    if (
+      !album.ratings ||
+      !Array.isArray(album.ratings.user1) ||
+      !Array.isArray(album.ratings.user2)
+    ) {
+      return false;
+    }
+
+    const user1Has = album.ratings.user1
+      .map((r) => (r ? r.rate : null))
+      .some((rate) => typeof rate === "number");
+    const user2Has = album.ratings.user2
+      .map((r) => (r ? r.rate : null))
+      .some((rate) => typeof rate === "number");
+
+    return user1Has && user2Has;
+  };
+
+  const evaluatedCount = albumsOfThisYear.filter(isEvaluatedByBoth).length;
+
   return (
     <main className="d-flex flex-column align-items-start">
       <header className="d-flex flex-column align-items-start gap-3 w-100 home-header">
@@ -98,7 +127,10 @@ export default function Home({ user, onLogout }) {
 
           {/* Botão de editar perfil visível quando logado */}
           {user && (
-            <button onClick={navigateToEditProfile} className="button-secondary">
+            <button
+              onClick={navigateToEditProfile}
+              className="button-secondary"
+            >
               Editar perfil
             </button>
           )}
@@ -112,17 +144,36 @@ export default function Home({ user, onLogout }) {
         </div>
       </header>
 
+      <div className="w-100">
+        <div className="general-ranking-section mb-4 w-100">
+          {isLoading ? <RankingLoader /> : <GeneralRanking albums={albums} />}
+        </div>
+      </div>
+
       <div className="d-flex flex-wrap justify-content-between w-100">
-        <div className="ranking-section pe-2">
-          {isLoading ? <RankingLoader /> : <Ranking albums={albums} />}
-        </div>
-        <div className="worst-ranking-section ps-2">
-          {isLoading ? (
-            <WorstRankingLoader />
-          ) : (
-            <WorstRanking albums={albums} />
-          )}
-        </div>
+        {isLoading ? (
+          <>
+            <div className="ranking-section pe-2">
+              <RankingLoader />
+            </div>
+            <div className="worst-ranking-section ps-2">
+              <WorstRankingLoader />
+            </div>
+          </>
+        ) : // Quando não estiver carregando, mostrar a seção do ano somente
+        // se houver pelo menos 5 álbuns avaliados por ambos os usuários.
+        evaluatedCount >= 5 ? (
+          <>
+            <div className="ranking-section pe-2">
+              <Ranking albums={albums} />
+            </div>
+            {evaluatedCount >= 10 && (
+              <div className="worst-ranking-section ps-2">
+                <WorstRanking albums={albums} />
+              </div>
+            )}
+          </>
+        ) : null}
       </div>
       {isLoading ? (
         <CommentsLoader />
