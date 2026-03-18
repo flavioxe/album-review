@@ -1,0 +1,129 @@
+@use '../../styles/variables.scss';
+
+.spotify-search-wrapper {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid variables.$third-color;
+  border-radius: 12px;
+  overflow: visible;
+  width: 100%;
+}
+
+.spotify-search-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.spotify-results-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.spotify-result-card {
+  width: 100%;
+  min-width: 0;
+  background-color: variables.$white-color;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+}
+
+.spotify-result-cover {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.spotify-result-texts {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.spotify-result-title,
+.spotify-result-artist {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.spotify-result-artist {
+  color: variables.$gray-color;
+}
+
+.spotify-toast-success {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 3200;
+  background: #1f8f4d;
+  color: variables.$white-color;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: spotify-toast-in 0.2s ease;
+}
+
+@keyframes spotify-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .spotify-search-wrapper {
+    padding: 0.75rem;
+  }
+
+  .spotify-search-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .spotify-results-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .spotify-result-cover {
+    height: 9.5rem;
+  }
+
+  .spotify-toast-success {
+    right: 0.75rem;
+    left: 0.75rem;
+    top: 0.75rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .spotify-results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spotify-result-cover {
+    height: 11rem;
+  }
+}

@@ -7,6 +7,7 @@ import WorstRanking from "../components/WorstRanking/WorstRanking";
 import CommentsCarousel from "../components/CommentsCarousel/CommentsCarousel";
 import Latests from "../components/Latests/Latests";
 import UserAvatar from "../components/UserAvatar/UserAvatar";
+import SpotifySearch from "../components/SpotifySearch/SpotifySearch";
 import {
   RankingLoader,
   WorstRankingLoader,
@@ -19,12 +20,13 @@ import "../styles/Home.scss";
 export default function Home({ user, onLogout }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSpotifySearchVisible, setIsSpotifySearchVisible] = useState(false);
 
   const navigate = useNavigate();
   const database = getDatabase();
 
-  const navigateToAddAlbum = () => {
-    navigate("/add-album");
+  const toggleSpotifySearch = () => {
+    setIsSpotifySearchVisible((prev) => !prev);
   };
 
   const navigateToAllAlbum = () => {
@@ -110,12 +112,12 @@ export default function Home({ user, onLogout }) {
           Uma plataforma para avaliação de álbuns musicais
         </h5>
 
-        <div className="d-flex align-items-center gap-2">
+        <div className="home-actions d-flex align-items-center gap-2">
           <button onClick={navigateToAllAlbum} className="button-secondary">
             Todas as reviews
           </button>
-          <button onClick={navigateToAddAlbum} className="button-primary">
-            + Novo registro
+          <button onClick={toggleSpotifySearch} className="button-primary">
+            {isSpotifySearchVisible ? "Fechar busca" : "+ Novo registro"}
           </button>
 
           {/* Botão para o bolão do grammy aparece apenas se o usuário estiver logado */}
@@ -141,6 +143,12 @@ export default function Home({ user, onLogout }) {
               Login
             </button>
           )}
+        </div>
+
+        <div
+          className={`spotify-search-panel ${isSpotifySearchVisible ? "open" : ""}`}
+        >
+          {isSpotifySearchVisible ? <SpotifySearch /> : null}
         </div>
       </header>
 

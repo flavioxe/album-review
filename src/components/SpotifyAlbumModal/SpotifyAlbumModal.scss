@@ -1,0 +1,223 @@
+@use '../../styles/variables.scss';
+
+.spotify-modal-portal {
+  position: relative;
+  z-index: 3000;
+}
+
+.spotify-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 1rem;
+  isolation: isolate;
+}
+
+.spotify-modal {
+  width: min(680px, 100%);
+  max-height: 88vh;
+  position: relative;
+  overflow: visible;
+}
+
+.spotify-modal-shell {
+  background: variables.$white-color;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 88vh;
+}
+
+.spotify-modal-header {
+  min-height: 8rem;
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.spotify-modal-header-loader {
+  position: absolute;
+  top: 0.5rem;
+  right: 3.25rem;
+  color: variables.$white-color;
+}
+
+.spotify-modal-close {
+  position: absolute;
+  top: -0.85rem;
+  right: -0.85rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: variables.$secondary-color;
+  color: variables.$white-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0;
+  padding-bottom: 2px;
+  z-index: 5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background-color: #000;
+    opacity: 1;
+  }
+}
+
+.spotify-modal-cover {
+    position: absolute;
+    top: 20px;
+  display: block;
+  width: 7.5rem;
+  max-width: 7.5rem;
+  height: 7.5rem;
+  max-height: 7.5rem;
+  flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: cover;
+  transform: translateY(1rem);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.spotify-modal-headings {
+    margin-left: 22%;
+  color: variables.$white-color;
+  padding-left: 0.2rem;
+
+  h3,
+  h6 {
+    color: variables.$white-color;
+  }
+}
+
+.spotify-modal-body {
+  padding: 2rem 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.spotify-modal-meta {
+  flex-shrink: 0;
+}
+
+.spotify-tracks-scroll {
+  max-height: 38vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  border-radius: 8px;
+}
+
+.spotify-tracks-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.spotify-tracks-scroll::-webkit-scrollbar-track {
+  background: #efefef;
+  border-radius: 8px;
+}
+
+.spotify-tracks-scroll::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 8px;
+}
+
+.spotify-tracks-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9f9f9f;
+}
+
+.spotify-tracks-list {
+  width: 100%;
+  border-top: 1px solid variables.$third-color;
+  border-bottom: 1px solid variables.$third-color;
+}
+
+.spotify-track-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.spotify-track-title {
+  text-align: left;
+}
+
+.spotify-modal-footer {
+  padding: 1rem 1.5rem 1.25rem;
+  border-top: 1px solid variables.$third-color;
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+
+  .button-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.spotify-submit-loader {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: variables.$white-color;
+  border-radius: 999px;
+  animation: spotify-spin 0.7s linear infinite;
+}
+
+@keyframes spotify-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .spotify-modal-header {
+    align-items: center;
+    min-height: auto;
+  }
+
+  .spotify-modal-cover {
+    width: 5.5rem;
+    max-width: 5.5rem;
+    height: 5.5rem;
+    max-height: 5.5rem;
+    transform: translateY(0);
+  }
+
+  .spotify-modal-headings {
+    margin-left: 28%;
+  }
+
+  .spotify-modal-body {
+    padding-top: 1rem;
+  }
+
+  .spotify-tracks-scroll {
+    max-height: 34vh;
+  }
+
+  .spotify-modal-close {
+    top: -0.6rem;
+    right: -0.5rem;
+  }
+}
