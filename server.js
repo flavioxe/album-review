@@ -75,8 +75,14 @@ const mapAlbumFromSpotify = (album) => ({
 
 const handleSpotifyError = (res, error) => {
   const status = error.status || 500;
+  const message = error?.message || "";
+
+  if (message.startsWith("Missing environment variable:")) {
+    return res.status(500).json({ error: message });
+  }
+
   if (status >= 400 && status < 500) {
-    return res.status(status).json({ error: error.message || "Spotify request error" });
+    return res.status(status).json({ error: message || "Spotify request error" });
   }
   return res.status(500).json({ error: "Internal server error while contacting Spotify" });
 };
@@ -185,5 +191,8 @@ app.get("/api/spotify/album/:id", async (req, res) => {
 
 // Iniciar o servidor
 app.listen(PORT, () => {
+  if (!process.env.SPOTIFY_CLIENT_ID || !process.env.SPOTIFY_CLIENT_SECRET) {
+    console.warn("Spotify env vars are missing. Configure SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in .env");
+  }
   console.log(`Servidor rodando na porta ${PORT}`);
 });
