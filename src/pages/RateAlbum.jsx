@@ -1,16 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import HeaderPages from "../components/HeaderPages/HeaderPages";
 import AlbumHeader from "../components/AlbumHeader/AlbumHeader";
 import DivisionMark from "../components/DivisionMark/DivisionMark";
 
+const buildRatings = (data) => ({
+  user1: data.tracks.map((track) => {
+    const existingRating = data.ratings?.user1?.find(
+      (r) => r.title === track.title,
+    );
+    return existingRating || { title: track.title, rate: null };
+  }),
+  user2: data.tracks.map((track) => {
+    const existingRating = data.ratings?.user2?.find(
+      (r) => r.title === track.title,
+    );
+    return existingRating || { title: track.title, rate: null };
+  }),
+});
+
 export default function RateAlbum() {
   const { id } = useParams();
-  const [album, setAlbum] = useState(null);
-  const [ratings, setRatings] = useState({ user1: [], user2: [] });
-  const [bestNewTracks, setBestNewTracks] = useState({ user1: "", user2: "" });
-  const [comments, setComments] = useState({ user1: "", user2: "" });
+  const location = useLocation();
+  const preloadedAlbum = location.state?.album || null;
+
+  const [album, setAlbum] = useState(preloadedAlbum);
+  const [ratings, setRatings] = useState(
+    preloadedAlbum ? buildRatings(preloadedAlbum) : { user1: [], user2: [] },
+  );
+  const [bestNewTracks, setBestNewTracks] = useState(
+    preloadedAlbum?.bestNewTracks || { user1: "", user2: "" },
+  );
+  const [comments, setComments] = useState(
+    preloadedAlbum?.comments || { user1: "", user2: "" },
+  );
   const [areGradesHidden, setAreGradesHidden] = useState({
     user1: false,
     user2: false,
@@ -25,22 +49,7 @@ export default function RateAlbum() {
       const data = snapshot.val();
       if (data) {
         setAlbum(data);
-        const initialRatings = {
-          user1: data.tracks.map((track) => {
-            const existingRating = data.ratings?.user1?.find(
-              (r) => r.title === track.title,
-            );
-            return existingRating || { title: track.title, rate: null };
-          }),
-          user2: data.tracks.map((track) => {
-            const existingRating = data.ratings?.user2?.find(
-              (r) => r.title === track.title,
-            );
-            return existingRating || { title: track.title, rate: null };
-          }),
-        };
-
-        setRatings(initialRatings);
+        setRatings(buildRatings(data));
         setBestNewTracks(data.bestNewTracks || { user1: "", user2: "" });
         setComments(data.comments || { user1: "", user2: "" });
       }

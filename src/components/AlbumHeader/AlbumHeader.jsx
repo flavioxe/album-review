@@ -66,11 +66,16 @@ export default function AlbumHeader({ album, pageTitle = "" }) {
       </div>
 
       <div className="d-flex align-items-center gap-2 mt-4">
-        <button onClick={() => navigate(`/edit-album/${album.id}`)} className="button-outline w-50">
+        <button
+          onClick={() => navigate(`/edit-album/${album.id}`)}
+          className="button-outline w-50"
+        >
           Editar obra
         </button>{" "}
         <button
-          onClick={() => navigate(`/rate-album/${album.id}`)}
+          onClick={() =>
+            navigate(`/rate-album/${album.id}`, { state: { album } })
+          }
           className="button-secondary w-50"
           style={{ backgroundColor: album.primaryColor || "#1A1A1A" }}
         >
