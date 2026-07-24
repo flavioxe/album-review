@@ -2,6 +2,25 @@
     max-width: 100%;
 }
 
+.ranking-album-row {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.ranking-album-info {
+    min-width: 0;
+    flex: 1 1 auto;
+    text-align: left;
+
+    p,
+    small {
+        text-align: left;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+}
+
 .ranking-index {
     width: 0.625rem;
 }

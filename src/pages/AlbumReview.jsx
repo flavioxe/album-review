@@ -52,8 +52,14 @@ export default function AlbumReview() {
 
   return (
     <section className="d-flex flex-column align-items-start gap-3 w-100">
-      <HeaderPages text="Detalhes da obra" />
-      {album ? <AlbumHeader album={album} /> : <p>Carregando álbum...</p>}
+      {album ? (
+        <AlbumHeader album={album} pageTitle="Detalhes da obra" />
+      ) : (
+        <>
+          <HeaderPages text="Detalhes da obra" />
+          <p>Carregando álbum...</p>
+        </>
+      )}
 
       <div className="box-album-details w-100">
         <div className="table-row">

@@ -19,7 +19,7 @@ export default function RankingCard({ album, index }) {
   return (
     <>
       <div className="d-flex align-items-center justify-content-between w-100">
-        <div className="d-flex align-items-center gap-3">
+        <div className="d-flex align-items-center gap-3 ranking-album-row">
           <p className="ranking-index">
             <strong>{index + 1}</strong>
           </p>
@@ -30,11 +30,11 @@ export default function RankingCard({ album, index }) {
             className="ranking-album-cover"
           />
 
-          <div className="d-flex flex-column align-items-start gap-1">
-            <p className="d-flex align-items-center gap-2">
+          <div className="d-flex flex-column align-items-start gap-1 ranking-album-info">
+            <p className="d-flex align-items-center gap-2 text-left">
               <strong>{album.name}</strong>
             </p>
-            <small>{album.artist}</small>
+            <small className="text-left">{album.artist}</small>
           </div>
         </div>
 

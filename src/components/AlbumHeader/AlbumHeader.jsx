@@ -6,22 +6,49 @@ import DivisionMark from "../DivisionMark/DivisionMark";
 
 import "./AlbumHeader.scss";
 
-export default function AlbumHeader({ album }) {
+export default function AlbumHeader({ album, pageTitle = "" }) {
   const navigate = useNavigate();
 
   return (
     <section className="w-100">
       <div
-        className="box-album-header"
+        className="album-hero"
         style={{
           backgroundColor: album.primaryColor || "#1A1A1A",
         }}
       >
-        <img
-          src={album.cover}
-          alt={`${album.name} cover`}
-          className="cover-image"
-        />
+        <div className="album-hero-inner">
+          <header className="album-hero-topbar d-flex align-items-center justify-content-between w-100">
+            <button
+              onClick={() => navigate("/")}
+              className="d-flex align-items-center gap-2 back-button"
+            >
+              <svg
+                width="6"
+                height="11"
+                viewBox="0 0 6 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.94692 1.39394L5.04793 0.5L0.0529785 5.5L5.05298 10.5L5.94692 9.60606L1.84086 5.5L5.94692 1.39394Z"
+                  fill="#fff"
+                />
+              </svg>{" "}
+              Voltar
+            </button>
+
+            <p>
+              <strong>{pageTitle}</strong>
+            </p>
+          </header>
+
+          <img
+            src={album.cover}
+            alt={`${album.name} cover`}
+            className="cover-image"
+          />
+        </div>
       </div>
       <div className="d-flex flex-column align-items-start gap-1 album-details">
         {album && (
@@ -45,6 +72,7 @@ export default function AlbumHeader({ album }) {
         <button
           onClick={() => navigate(`/rate-album/${album.id}`)}
           className="button-secondary w-50"
+          style={{ backgroundColor: album.primaryColor || "#1A1A1A" }}
         >
           Atribuir notas
         </button>{" "}
@@ -62,4 +90,5 @@ AlbumHeader.propTypes = {
     releaseDate: PropTypes.string.isRequired,
     primaryColor: PropTypes.string,
   }).isRequired,
+  pageTitle: PropTypes.string,
 };

@@ -172,7 +172,13 @@ export default function Home({ user, onLogout }) {
         // se houver pelo menos 5 álbuns avaliados por ambos os usuários.
         evaluatedCount >= 5 ? (
           <>
-            <div className="ranking-section pe-2">
+            <div
+              className={
+                evaluatedCount >= 10
+                  ? "ranking-section pe-2"
+                  : "ranking-section w-100"
+              }
+            >
               <Ranking albums={albums} />
             </div>
             {evaluatedCount >= 10 && (

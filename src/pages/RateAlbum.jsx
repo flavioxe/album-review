@@ -154,8 +154,14 @@ export default function RateAlbum() {
 
   return (
     <section className="d-flex flex-column align-items-start gap-3 w-100">
-      <HeaderPages text="Avaliar álbum" />
-      {album ? <AlbumHeader album={album} /> : <p>Carregando álbum...</p>}
+      {album ? (
+        <AlbumHeader album={album} pageTitle="Avaliar álbum" />
+      ) : (
+        <>
+          <HeaderPages text="Avaliar álbum" />
+          <p>Carregando álbum...</p>
+        </>
+      )}
 
       <div className="box-album-details w-100">
         <div className="table-row">
@@ -362,7 +368,11 @@ export default function RateAlbum() {
           </div>
         </section>
 
-        <button onClick={handleSubmit} className="button-primary mt-4 w-100">
+        <button
+          onClick={handleSubmit}
+          className="button-primary mt-4 w-100"
+          style={{ backgroundColor: album?.primaryColor || "#1A1A1A" }}
+        >
           Salvar
         </button>
       </div>
