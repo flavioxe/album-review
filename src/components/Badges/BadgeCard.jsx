@@ -1,11 +1,23 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function BadgeCard({ config, badge }) {
+  const navigate = useNavigate();
   const Icon = config.icon;
   const accent = badge.color || config.accent;
+  const isClickable = Boolean(badge.albumId);
 
   return (
-    <div className="badge-card">
+    <div
+      className={`badge-card${isClickable ? " badge-card--clickable" : ""}`}
+      onClick={
+        isClickable
+          ? () => navigate(`/album-review/${badge.albumId}`)
+          : undefined
+      }
+      role={isClickable ? "button" : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+    >
       <span
         className="badge-pin"
         style={{ color: accent }}
@@ -57,6 +69,7 @@ BadgeCard.propTypes = {
     subtitle: PropTypes.string,
     cover: PropTypes.string,
     color: PropTypes.string,
+    albumId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     metric: PropTypes.string,
     metricLabel: PropTypes.string,
   }).isRequired,

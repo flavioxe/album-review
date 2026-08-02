@@ -1,9 +1,15 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function BadgeRanking({ config, badge }) {
+  const navigate = useNavigate();
   const Icon = config.icon;
   const [top, ...rest] = badge.items;
   const accent = top.color || config.accent;
+
+  const goToAlbum = (albumId) => {
+    if (albumId) navigate(`/album-review/${albumId}`);
+  };
 
   return (
     <div className="badge-ranking">
@@ -19,7 +25,12 @@ export default function BadgeRanking({ config, badge }) {
         {config.label}
       </span>
 
-      <div className="badge-ranking-top d-flex align-items-center gap-3">
+      <div
+        className={`badge-ranking-top d-flex align-items-center gap-3${top.albumId ? " badge-card--clickable" : ""}`}
+        onClick={top.albumId ? () => goToAlbum(top.albumId) : undefined}
+        role={top.albumId ? "button" : undefined}
+        tabIndex={top.albumId ? 0 : undefined}
+      >
         {top.cover && (
           <img
             src={top.cover}
@@ -58,7 +69,10 @@ export default function BadgeRanking({ config, badge }) {
           {rest.map((item, index) => (
             <div
               key={item.title}
-              className="badge-ranking-row d-flex align-items-center justify-content-between"
+              className={`badge-ranking-row d-flex align-items-center justify-content-between${item.albumId ? " badge-card--clickable" : ""}`}
+              onClick={item.albumId ? () => goToAlbum(item.albumId) : undefined}
+              role={item.albumId ? "button" : undefined}
+              tabIndex={item.albumId ? 0 : undefined}
             >
               <div className="d-flex align-items-center gap-2 badge-ranking-row-info">
                 <span className="badge-ranking-index">{index + 2}</span>
@@ -107,6 +121,7 @@ BadgeRanking.propTypes = {
         subtitle: PropTypes.string,
         cover: PropTypes.string,
         color: PropTypes.string,
+        albumId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         metric: PropTypes.string,
         metricLabel: PropTypes.string,
         evaluatorName: PropTypes.string,

@@ -101,6 +101,7 @@ export function computeBadges(albums) {
         subtitle: lowestAlbum.album.artist,
         cover: lowestAlbum.album.cover,
         color: lowestAlbum.album.primaryColor,
+        albumId: lowestAlbum.album.id,
         metric: lowestAlbum.avg.toFixed(2),
         metricLabel: "média",
       });
@@ -129,6 +130,7 @@ export function computeBadges(albums) {
         subtitle: mostDiscordant.album.artist,
         cover: mostDiscordant.album.cover,
         color: mostDiscordant.album.primaryColor,
+        albumId: mostDiscordant.album.id,
         metric: mostDiscordant.diff.toFixed(2),
         metricLabel: "de diferença",
       });
@@ -139,6 +141,7 @@ export function computeBadges(albums) {
         subtitle: mostConsensual.album.artist,
         cover: mostConsensual.album.cover,
         color: mostConsensual.album.primaryColor,
+        albumId: mostConsensual.album.id,
         metric: mostConsensual.diff.toFixed(2),
         metricLabel: "de diferença",
       });
@@ -167,6 +170,7 @@ export function computeBadges(albums) {
             : `${mostRecent.album.artist} • ${releaseYear}`,
         cover: mostRecent.album.cover,
         color: mostRecent.album.primaryColor,
+        albumId: mostRecent.album.id,
         ratings: [
           {
             label: USER_NAMES.user1,
@@ -309,6 +313,7 @@ export function computeBadges(albums) {
         subtitle: album.artist,
         cover: album.cover,
         color: album.primaryColor,
+        albumId: album.id,
         metric: avg.toFixed(2),
         metricLabel: "nota",
         evaluatorName: USER_NAMES[user],
@@ -327,6 +332,7 @@ export function computeBadges(albums) {
       subtitle: `${lowest.album.name} - ${lowest.album.artist}`,
       cover: lowest.album.cover,
       color: lowest.album.primaryColor,
+      albumId: lowest.album.id,
       metric: lowest.rate.toFixed(1),
       metricLabel: "nota",
     });

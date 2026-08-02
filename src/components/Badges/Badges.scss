@@ -29,6 +29,20 @@
   }
 }
 
+.badge-card--clickable {
+  cursor: pointer;
+}
+
+.badge-ranking-top.badge-card--clickable,
+.badge-ranking-row.badge-card--clickable {
+  border-radius: 8px;
+  transition: background-color 120ms ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
 .badge-pin {
   position: absolute;
   top: -0.6rem;
