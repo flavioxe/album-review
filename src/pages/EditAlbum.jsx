@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import HeaderPages from "../components/HeaderPages/HeaderPages";
 import DivisionMark from "../components/DivisionMark/DivisionMark";
+import SpotifyAlbumSync from "../components/SpotifyAlbumSync/SpotifyAlbumSync";
 import { Trash } from "phosphor-react";
 
 export default function EditAlbum() {
@@ -18,6 +19,7 @@ export default function EditAlbum() {
   const [cover, setCover] = useState("");
   const [genre, setGenre] = useState("");
   const [tracks, setTracks] = useState(["", "", "", ""]);
+  const [isSpotifySyncOpen, setIsSpotifySyncOpen] = useState(false);
 
   const toDateInputValue = (dateString) => {
     if (!dateString) return "";
@@ -92,6 +94,16 @@ export default function EditAlbum() {
     return { user1, user2 };
   };
 
+  const handleApplySpotifyFields = (fields) => {
+    if ("name" in fields) setName(fields.name);
+    if ("artist" in fields) setArtist(fields.artist);
+    if ("cover" in fields) setCover(fields.cover);
+    if ("releaseDate" in fields)
+      setReleaseDate(toDateInputValue(fields.releaseDate));
+    if ("primaryColor" in fields) setPrimaryColor(fields.primaryColor);
+    setIsSpotifySyncOpen(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!album) return;
@@ -132,7 +144,26 @@ export default function EditAlbum() {
       {!album ? (
         <p>Carregando...</p>
       ) : (
-        <form onSubmit={handleSubmit} className="d-flex flex-column align-items-start gap-2 w-100">
+        <>
+          <button
+            type="button"
+            className="button-secondary w-100"
+            onClick={() => setIsSpotifySyncOpen((prev) => !prev)}
+          >
+            {isSpotifySyncOpen
+              ? "Fechar busca do Spotify"
+              : "Atualizar dados via Spotify"}
+          </button>
+
+          {isSpotifySyncOpen && (
+            <SpotifyAlbumSync
+              current={{ name, artist, releaseDate, cover, primaryColor }}
+              onApply={handleApplySpotifyFields}
+              onCancel={() => setIsSpotifySyncOpen(false)}
+            />
+          )}
+
+          <form onSubmit={handleSubmit} className="d-flex flex-column align-items-start gap-2 w-100">
           <p className="mb-2">
             <strong>Informações gerais</strong>
           </p>
@@ -202,7 +233,8 @@ export default function EditAlbum() {
           <button type="submit" className="button-primary w-100">
             Salvar alterações
           </button>
-        </form>
+          </form>
+        </>
       )}
     </section>
   );

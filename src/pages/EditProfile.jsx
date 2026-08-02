@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import HeaderPages from "../components/HeaderPages/HeaderPages";
 import UserAvatar from "../components/UserAvatar/UserAvatar";
+import { navigateBack } from "../utils/navigation";
 
 export default function EditProfile({ user }) {
   const navigate = useNavigate();
@@ -116,7 +117,7 @@ export default function EditProfile({ user }) {
             <button
               type="button"
               className="button-outline w-100"
-              onClick={() => navigate("/")}
+              onClick={() => navigateBack(navigate)}
             >
               Cancelar
             </button>

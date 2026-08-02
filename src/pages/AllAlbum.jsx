@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
 import HeaderPages from "../components/HeaderPages/HeaderPages";
 import Month from "../components/Month/Month";
 
 export default function AllAlbum() {
   const [albumsByMonth, setAlbumsByMonth] = useState({});
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
   const [years, setYears] = useState([new Date().getFullYear()]);
   const database = getDatabase();
+
+  // O ano selecionado vive na URL (?year=), assim ele é preservado
+  // quando o usuário navega para os detalhes de um álbum e volta.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const yearParam = Number(searchParams.get("year"));
+  const selectedYear = Number.isInteger(yearParam)
+    ? yearParam
+    : new Date().getFullYear();
+
+  const setSelectedYear = (year) => {
+    setSearchParams(
+      (prev) => {
+        const params = new URLSearchParams(prev);
+        params.set("year", String(year));
+        return params;
+      },
+      { replace: true },
+    );
+  };
 
   // Function to fetch albums from Firebase
   const fetchAlbums = () => {
