@@ -1,0 +1,358 @@
+.badges-section {
+  margin-bottom: 2rem;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: dense;
+  gap: 1.1rem;
+}
+
+/* Elemento compartilhado entre as variantes de card */
+.badge-card,
+.badge-featured,
+.badge-ranking {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.2rem 1rem 0.9rem 1.4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.badge-pin {
+  position: absolute;
+  top: -0.6rem;
+  left: -0.5rem;
+  z-index: 2;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-18deg);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.badge-card-label {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: break-word;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- Card padrão ---------- */
+.badge-card-body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.badge-card-cover {
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.badge-card-info {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.badge-card-title {
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.badge-card-subtitle {
+  display: block;
+  color: #767676;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.badge-card-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+
+  strong {
+    font-size: 1.15rem;
+    line-height: 1.1;
+  }
+
+  small {
+    color: #767676;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+  }
+}
+
+/* ---------- Card em destaque (largura total) ---------- */
+.badge-featured {
+  grid-column: 1 / -1;
+}
+
+.badge-featured-body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.badge-featured-cover {
+  flex: 0 0 auto;
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.badge-featured-info {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.badge-featured-title {
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  font-size: 1.1rem;
+}
+
+.badge-featured-subtitle {
+  display: block;
+  color: #767676;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.badge-featured-metric {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+
+  strong {
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+
+  small {
+    color: #767676;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+  }
+}
+
+.badge-featured-ratings {
+  flex: 0 0 auto;
+}
+
+.badge-featured-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 3.5rem;
+
+  strong {
+    font-size: 1.3rem;
+    line-height: 1.1;
+  }
+
+  small {
+    color: #767676;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+}
+
+.badge-featured-rating-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  .badge-featured-body {
+    flex-wrap: wrap;
+  }
+
+  .badge-featured-ratings {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .badge-featured-metric {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* ---------- Card de ranking (top 5) ---------- */
+.badge-ranking {
+  grid-column: span 2;
+}
+
+.badge-ranking-top {
+  min-width: 0;
+  padding-bottom: 0.85rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.badge-ranking-top-cover {
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.badge-ranking-top-info {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.badge-ranking-top-title {
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  font-size: 1.05rem;
+}
+
+.badge-ranking-top-subtitle {
+  display: block;
+  color: #767676;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.badge-ranking-top-metric {
+  flex: 0 0 auto;
+
+  strong {
+    font-size: 1.4rem;
+    line-height: 1.1;
+  }
+
+  small {
+    color: #767676;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.badge-ranking-evaluator-avatar {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+  &--small {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-width: 1px;
+  }
+}
+
+.badge-ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+  justify-content: space-between;
+}
+
+.badge-ranking-row {
+  min-width: 0;
+}
+
+.badge-ranking-row-info {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.badge-ranking-index {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  color: #767676;
+  font-size: 0.8rem;
+}
+
+.badge-ranking-row-cover {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.badge-ranking-row-title {
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  font-size: 0.85rem;
+}
+
+.badge-ranking-row-metric {
+  flex: 0 0 auto;
+  color: #767676;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+@media (max-width: 992px) {
+  .badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .badge-ranking {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .badges-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-ranking {
+    grid-column: 1 / -1;
+  }
+}

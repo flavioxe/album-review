@@ -8,6 +8,7 @@ import CommentsCarousel from "../components/CommentsCarousel/CommentsCarousel";
 import Latests from "../components/Latests/Latests";
 import UserAvatar from "../components/UserAvatar/UserAvatar";
 import SpotifySearch from "../components/SpotifySearch/SpotifySearch";
+import Badges from "../components/Badges/Badges";
 import {
   RankingLoader,
   WorstRankingLoader,
@@ -155,6 +156,12 @@ export default function Home({ user, onLogout }) {
       <div className="w-100">
         <div className="general-ranking-section mb-4 w-100">
           {isLoading ? <RankingLoader /> : <GeneralRanking albums={albums} />}
+        </div>
+      </div>
+
+      <div className="w-100">
+        <div className="mb-4 w-100">
+          {isLoading ? <RankingLoader /> : <Badges albums={albums} />}
         </div>
       </div>
 
