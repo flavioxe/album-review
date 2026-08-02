@@ -341,4 +341,4 @@ export function computeBadges(albums) {
   return badges;
 }
 
-export { USER_NAMES };
+export { USER_NAMES, USER_AVATARS };

@@ -9,6 +9,7 @@ import Latests from "../components/Latests/Latests";
 import UserAvatar from "../components/UserAvatar/UserAvatar";
 import SpotifySearch from "../components/SpotifySearch/SpotifySearch";
 import Badges from "../components/Badges/Badges";
+import RatingsTimeline from "../components/RatingsTimeline/RatingsTimeline";
 import {
   RankingLoader,
   WorstRankingLoader,
@@ -202,6 +203,7 @@ export default function Home({ user, onLogout }) {
         <CommentsCarousel albums={albums} user={user} />
       )}
       {isLoading ? <LatestsLoader /> : <Latests albums={albums} />}
+      {!isLoading && <RatingsTimeline albums={albums} />}
     </main>
   );
 }
