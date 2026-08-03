@@ -30,6 +30,12 @@
     gap: 8px;
 }
 
+.artist-link {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .carimba-stamp-absolute {
     position: absolute;
     top: -10px;

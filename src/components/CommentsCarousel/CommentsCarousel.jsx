@@ -111,10 +111,7 @@ const CommentsCarousel = ({ albums }) => {
 
   // Extrair comentários dos álbuns
   const allComments = extractComments(albums);
-
-  // Dobrar a quantidade de comentários exibidos
-  const displayComments =
-    allComments.length > 0 ? [...allComments, ...allComments] : [];
+  const displayComments = allComments;
 
   useEffect(() => {
     if (!isAutoPlay || displayComments.length <= 1) return;

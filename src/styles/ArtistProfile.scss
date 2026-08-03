@@ -1,0 +1,297 @@
+@use './variables.scss';
+
+.artist-banner {
+    position: relative;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    margin-top: -1rem;
+    background-color: variables.$secondary-color;
+    color: #fff;
+    min-height: 12rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.artist-banner-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+
+    .back-button {
+        background: transparent;
+        border: 1px solid var(--banner-text-color, #fff);
+        border-radius: 6px;
+        padding: 0.4rem 0.75rem;
+        color: var(--banner-text-color, #fff);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+
+        &:hover {
+            background-color: rgba(128, 128, 128, 0.2);
+        }
+
+        &:active {
+            transform: scale(0.96);
+        }
+    }
+}
+
+.artist-banner-body {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.artist-banner-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    padding: 3.25rem 0 1rem 1rem;
+    text-align: left;
+    z-index: 2;
+    max-width: 60%;
+}
+
+.artist-name {
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+    font-weight: 700;
+    margin: 0;
+    color: var(--banner-text-color, #fff);
+    text-shadow: var(--banner-text-shadow, none);
+}
+
+.artist-latest-release {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    color: var(--banner-text-color, #fff);
+    text-shadow: var(--banner-text-shadow, none);
+
+    p,
+    small,
+    strong {
+        color: inherit;
+    }
+}
+
+.artist-latest-release-cover {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.artist-banner-image {
+    height: 100%;
+    width: auto;
+    max-width: 55%;
+    object-fit: cover;
+    flex-shrink: 0;
+    mask-image: linear-gradient(to right, transparent, #000 15%);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 15%);
+}
+
+.artist-banner-rating {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.55);
+    border-radius: 8px;
+    padding: 0.5rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    strong {
+        font-size: 1.5rem;
+    }
+}
+
+.artist-content {
+    padding-top: 0.5rem;
+}
+
+.artist-banner-skeleton {
+    position: relative;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    margin-top: -1rem;
+    min-height: 12rem;
+    border-radius: 0;
+}
+
+.artist-banner-image-skeleton {
+    height: 100%;
+    max-width: 55%;
+    aspect-ratio: 3 / 4;
+    border-radius: 0;
+}
+
+.artist-bio-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.artist-two-columns {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.artist-bio-column {
+    flex: 0 0 70%;
+    max-width: 70%;
+    text-align: left;
+}
+
+.artist-rating-column {
+    flex: 0 0 calc(30% - 2rem);
+    max-width: calc(30% - 2rem);
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .artist-two-columns {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .artist-bio-column,
+    .artist-rating-column {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.artist-bio {
+    white-space: pre-line;
+}
+
+.artist-rating-column h6 {
+    margin-bottom: 1.25rem;
+}
+
+.artist-per-user-rating {
+    img {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+    }
+}
+
+.top-tracks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.top-track-row {
+    align-items: center;
+
+    .track-position {
+        width: 1.25rem;
+        text-align: center;
+        opacity: 0.6;
+        flex-shrink: 0;
+    }
+
+    .track-album-cover {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    .top-track-info {
+        min-width: 0;
+        text-align: left;
+
+        small {
+            text-align: left;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+    }
+
+    .top-track-meta {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .artist-banner {
+        min-height: 22rem;
+    }
+
+    .artist-banner-body {
+        flex-direction: column;
+        position: relative;
+    }
+
+    .artist-banner-info {
+        max-width: 100%;
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        padding: 3.25rem 1rem 1rem;
+    }
+
+    .artist-latest-release {
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        bottom: 0.75rem;
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.45);
+        border-radius: 8px;
+        padding: 0.5rem;
+        color: #ffffff;
+        text-shadow: none;
+    }
+
+    .artist-banner-image {
+        flex: 1 1 auto;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        min-height: 10rem;
+        mask-image: linear-gradient(to bottom, transparent, #000 30%);
+        -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%);
+    }
+
+    .artist-banner-rating {
+        background-color: transparent;
+        padding: 0;
+        color: #ffffff;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+
+        small {
+            font-size: 0.65rem;
+        }
+
+        strong {
+            font-size: 1.1rem;
+        }
+    }
+
+    .artist-banner-image-skeleton {
+        display: none;
+    }
+}

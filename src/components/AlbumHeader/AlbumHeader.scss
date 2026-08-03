@@ -58,6 +58,14 @@
     z-index: 2;
 }
 
+.artist-link {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .album-details {
     margin-top: 4.75rem;
 

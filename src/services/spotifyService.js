@@ -32,3 +32,16 @@ export async function getAlbumDetails(spotifyId) {
   const response = await fetch(`/api/spotify/album/${encodeURIComponent(spotifyId)}`);
   return parseJsonOrThrow(response);
 }
+
+export async function getArtistImage(artistName) {
+  const name = (artistName || "").trim();
+  if (!name) {
+    return null;
+  }
+
+  const response = await fetch(`/api/spotify/artist-search?q=${encodeURIComponent(name)}`);
+  if (response.status === 404) {
+    return null;
+  }
+  return parseJsonOrThrow(response);
+}

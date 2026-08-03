@@ -15,6 +15,7 @@ import AllAlbum from "./pages/AllAlbum";
 import AlbumReview from "./pages/AlbumReview";
 import EditAlbum from "./pages/EditAlbum";
 import RateAlbum from "./pages/RateAlbum";
+import ArtistProfile from "./pages/ArtistProfile";
 import GrammyBet from "./pages/GrammyBet";
 import Login from "./pages/Login";
 import EditProfile from "./pages/EditProfile";
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="/album-review/:id" element={<AlbumReview />} />
           <Route path="/edit-album/:id" element={<EditAlbum />} />
           <Route path="/rate-album/:id" element={<RateAlbum />} />
+          <Route path="/artista/:slug" element={<ArtistProfile />} />
           <Route
             path="/edit-profile"
             element={user ? <EditProfile user={user} /> : <Navigate to="/" />}

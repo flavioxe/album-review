@@ -5,6 +5,7 @@ import { House } from "phosphor-react";
 
 import DivisionMark from "../DivisionMark/DivisionMark";
 import { navigateBack } from "../../utils/navigation";
+import { slugify } from "../../utils/slug";
 
 import "./AlbumHeader.scss";
 
@@ -68,7 +69,12 @@ export default function AlbumHeader({ album, pageTitle = "" }) {
             <h3 className="text-left">
               <strong>{album.name}</strong>
             </h3>
-            <h6>{album.artist}</h6>
+            <h6
+              className="artist-link"
+              onClick={() => navigate(`/artista/${slugify(album.artist)}`)}
+            >
+              {album.artist}
+            </h6>
             <small>
               Lançamento:{" "}
               {new Date(album.releaseDate).toLocaleDateString("pt-BR")}

@@ -5,12 +5,18 @@ import "./AlbumCard.scss";
 
 import ducardo from "../../assets/ducardo.png";
 import flavioxe from "../../assets/flavioxe.png";
+import { slugify } from "../../utils/slug";
 
 export default function AlbumCard({ album }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/album-review/${album.id}`);
+  };
+
+  const handleArtistClick = (e) => {
+    e.stopPropagation();
+    navigate(`/artista/${slugify(album.artist)}`);
   };
 
   const getOverallAverage = () => {
@@ -56,7 +62,9 @@ export default function AlbumCard({ album }) {
         <p className="text-limit">
           <strong className="text-limit">{album.name}</strong>
         </p>
-        <small className="text-limit">{album.artist}</small>
+        <small className="text-limit artist-link" onClick={handleArtistClick}>
+          {album.artist}
+        </small>
       </div>
 
       <img

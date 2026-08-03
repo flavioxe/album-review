@@ -189,10 +189,211 @@ app.get("/api/spotify/album/:id", async (req, res) => {
   }
 });
 
+const DISCOGS_API_BASE = "https://api.discogs.com";
+const DISCOGS_USER_AGENT = "AlbumReviewApp/1.0 +https://github.com";
+
+const discogsFetch = async (path, params = {}) => {
+  const token = getEnvOrThrow("DISCOGS_TOKEN");
+  const searchParams = new URLSearchParams({ ...params, token });
+  const response = await fetch(`${DISCOGS_API_BASE}${path}?${searchParams.toString()}`, {
+    headers: { "User-Agent": DISCOGS_USER_AGENT },
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    const err = new Error(`Discogs request failed: ${message}`);
+    err.status = response.status;
+    throw err;
+  }
+
+  return response.json();
+};
+
+const cleanDiscogsText = (text) =>
+  (text || "")
+    .replace(/\[[a-z]=([^\]]+)\]/gi, "$1")
+    .replace(/\[[a-z]\d+\]/gi, "")
+    .replace(/\[\/?[a-z0-9]+\]/gi, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+
+const mapArtistFromDiscogs = (artist) => ({
+  discogsId: artist.id,
+  name: artist.name,
+  bio: cleanDiscogsText(artist.profile),
+  imageUrl: artist.images?.[0]?.resource_url || artist.images?.[0]?.uri || "",
+});
+
+const mapCreditsFromRelease = (release) => ({
+  albumCredits: (release.extraartists || []).map((person) => ({
+    name: person.name,
+    role: person.role,
+  })),
+  trackCredits: (release.tracklist || [])
+    .filter((track) => track.extraartists?.length)
+    .map((track) => ({
+      title: track.title,
+      credits: track.extraartists.map((person) => ({
+        name: person.name,
+        role: person.role,
+      })),
+    })),
+});
+
+const handleDiscogsError = (res, error) => {
+  const status = error.status || 500;
+  const message = error?.message || "";
+
+  if (message.startsWith("Missing environment variable:")) {
+    return res.status(500).json({ error: message });
+  }
+
+  if (status >= 400 && status < 500) {
+    return res.status(status).json({ error: message || "Discogs request error" });
+  }
+  return res.status(500).json({ error: "Internal server error while contacting Discogs" });
+};
+
+const mapArtistFromSpotify = (artist) => ({
+  id: artist.id,
+  name: artist.name,
+  imageUrl: artist.images?.[0]?.url ?? "",
+});
+
+const pickBestArtistMatch = (items, query) => {
+  if (!items?.length) return null;
+
+  const normalizedQuery = query.trim().toLowerCase();
+  const exactMatch = items.find(
+    (item) => (item.name || "").trim().toLowerCase() === normalizedQuery,
+  );
+
+  return exactMatch || items[0];
+};
+
+app.get("/api/spotify/artist-search", async (req, res) => {
+  const { q } = req.query;
+  if (!q || !String(q).trim()) {
+    return res.status(400).json({ error: "Query param 'q' is required" });
+  }
+
+  try {
+    const token = await getSpotifyAccessToken();
+    const searchParams = new URLSearchParams({ q: String(q).trim(), type: "artist", limit: "10" });
+
+    const response = await fetch(`${SPOTIFY_API_BASE}/search?${searchParams.toString()}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const message = await response.text();
+      const err = new Error(`Spotify artist search failed: ${message}`);
+      err.status = response.status;
+      throw err;
+    }
+
+    const data = await response.json();
+    const bestMatch = pickBestArtistMatch(data.artists?.items, String(q));
+    if (!bestMatch) {
+      return res.status(404).json({ error: "Artist not found on Spotify" });
+    }
+
+    return res.json(mapArtistFromSpotify(bestMatch));
+  } catch (error) {
+    return handleSpotifyError(res, error);
+  }
+});
+
+app.get("/api/discogs/artist-search", async (req, res) => {
+  const { q } = req.query;
+  if (!q || !String(q).trim()) {
+    return res.status(400).json({ error: "Query param 'q' is required" });
+  }
+
+  try {
+    const searchData = await discogsFetch("/database/search", {
+      q: String(q).trim(),
+      type: "artist",
+      per_page: "5",
+    });
+
+    const bestMatch = (searchData.results || [])[0];
+    if (!bestMatch) {
+      return res.status(404).json({ error: "Artist not found on Discogs" });
+    }
+
+    const artistData = await discogsFetch(`/artists/${bestMatch.id}`);
+    return res.json(mapArtistFromDiscogs(artistData));
+  } catch (error) {
+    return handleDiscogsError(res, error);
+  }
+});
+
+app.get("/api/discogs/release-credits", async (req, res) => {
+  const { artist, album } = req.query;
+  if (!artist || !album) {
+    return res.status(400).json({ error: "Query params 'artist' and 'album' are required" });
+  }
+
+  try {
+    const searchData = await discogsFetch("/database/search", {
+      artist: String(artist).trim(),
+      release_title: String(album).trim(),
+      type: "release",
+      per_page: "1",
+    });
+
+    const bestMatch = (searchData.results || [])[0];
+    if (!bestMatch) {
+      return res.status(404).json({ error: "Release not found on Discogs" });
+    }
+
+    const releaseData = await discogsFetch(`/releases/${bestMatch.id}`);
+    return res.json(mapCreditsFromRelease(releaseData));
+  } catch (error) {
+    return handleDiscogsError(res, error);
+  }
+});
+
+app.get("/api/translate", async (req, res) => {
+  const { text, target } = req.query;
+  if (!text || !String(text).trim()) {
+    return res.status(400).json({ error: "Query param 'text' is required" });
+  }
+
+  try {
+    const params = new URLSearchParams({
+      client: "gtx",
+      sl: "auto",
+      tl: target || "pt",
+      dt: "t",
+      q: String(text),
+    });
+
+    const response = await fetch(
+      `https://translate.googleapis.com/translate_a/single?${params.toString()}`,
+    );
+
+    if (!response.ok) {
+      throw new Error(`Translate request failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const translated = (data?.[0] || []).map((segment) => segment[0]).join("");
+
+    return res.json({ translatedText: translated });
+  } catch (error) {
+    return res.status(502).json({ error: "Falha ao traduzir o texto" });
+  }
+});
+
 // Iniciar o servidor
 app.listen(PORT, () => {
   if (!process.env.SPOTIFY_CLIENT_ID || !process.env.SPOTIFY_CLIENT_SECRET) {
     console.warn("Spotify env vars are missing. Configure SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in .env");
+  }
+  if (!process.env.DISCOGS_TOKEN) {
+    console.warn("Discogs env var is missing. Configure DISCOGS_TOKEN in .env");
   }
   console.log(`Servidor rodando na porta ${PORT}`);
 });

@@ -4,6 +4,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import HeaderPages from "../components/HeaderPages/HeaderPages";
 import AlbumHeader from "../components/AlbumHeader/AlbumHeader";
 import DivisionMark from "../components/DivisionMark/DivisionMark";
+import { getAlbumCredits } from "../services/discogsService";
 
 import "../styles/AlbumReview.scss";
 
@@ -14,6 +15,8 @@ export default function AlbumReview() {
   const [averages, setAverages] = useState({ user1: "", user2: "" });
   const [bestNewTracks, setBestNewTracks] = useState({ user1: "", user2: "" });
   const [comments, setComments] = useState({ user1: "", user2: "" });
+  const [credits, setCredits] = useState(null);
+  const [creditsLoading, setCreditsLoading] = useState(false);
   const database = getDatabase();
 
   const setAverageColor = (average) => {
@@ -49,6 +52,28 @@ export default function AlbumReview() {
       }
     });
   }, [id, database]);
+
+  useEffect(() => {
+    if (!album?.artist || !album?.name) return;
+
+    let cancelled = false;
+    setCreditsLoading(true);
+
+    getAlbumCredits(album.artist, album.name)
+      .then((data) => {
+        if (!cancelled) setCredits(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar creditos do album:", error);
+      })
+      .finally(() => {
+        if (!cancelled) setCreditsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [album?.artist, album?.name]);
 
   return (
     <section className="d-flex flex-column align-items-start gap-3 w-100">
@@ -156,6 +181,38 @@ export default function AlbumReview() {
             <small className="text-left">{comments.user2 || "-"}</small>
           </div>
         </section>
+
+        {(creditsLoading || credits) && (
+          <>
+            <DivisionMark />
+
+            <div className="d-flex align-items-center gap-3 mb-3">
+              <h6 className="text-left">
+                <strong>Créditos</strong>
+              </h6>
+            </div>
+
+            {creditsLoading && <p>Carregando créditos...</p>}
+
+            {!creditsLoading && credits && (
+              <section className="d-flex flex-column align-items-start gap-2 w-100">
+                {credits.albumCredits?.length > 0 ? (
+                  credits.albumCredits.map((credit, index) => (
+                    <div
+                      key={index}
+                      className="d-flex align-items-center justify-content-between w-100"
+                    >
+                      <small>{credit.name}</small>
+                      <small className="text-secondary">{credit.role}</small>
+                    </div>
+                  ))
+                ) : (
+                  <small>Nenhum crédito encontrado para este álbum.</small>
+                )}
+              </section>
+            )}
+          </>
+        )}
       </div>
     </section>
   );
