@@ -165,7 +165,7 @@ const CommentsCarousel = ({ albums }) => {
   const currentComment = displayComments[currentIndex];
 
   return (
-    <div className="comments-carousel text-left mb-5">
+    <div className="comments-carousel text-left">
       <h6>Reviews avançadas</h6>
       <div className="carousel-container">
         {/* Botão de pause/play */}

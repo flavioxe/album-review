@@ -101,7 +101,7 @@ export default function Home({ user, onLogout }) {
 
   return (
     <main className="d-flex flex-column align-items-start">
-      <header className="d-flex flex-column align-items-start gap-3 w-100 home-header">
+      <header className="d-flex flex-column align-items-start gap-3 mb-4 w-100 home-header">
         <div className="d-flex flex-column align-items-start">
           {user && <UserAvatar userId={user.uid} />}
 
@@ -154,19 +154,23 @@ export default function Home({ user, onLogout }) {
         </div>
       </header>
 
-      <div className="w-100">
-        <div className="general-ranking-section mb-4 w-100">
-          {isLoading ? <RankingLoader /> : <GeneralRanking albums={albums} />}
-        </div>
+      <div className="home-section mb-4">
+        {isLoading ? <LatestsLoader /> : <Latests albums={albums} />}
       </div>
 
-      <div className="w-100">
-        <div className="mb-4 w-100">
-          {isLoading ? <RankingLoader /> : <Badges albums={albums} />}
-        </div>
+      <div className="home-section mb-4">
+        {isLoading ? (
+          <CommentsLoader />
+        ) : (
+          <CommentsCarousel albums={albums} user={user} />
+        )}
       </div>
 
-      <div className="d-flex flex-wrap justify-content-between w-100">
+      <div
+        className={`d-flex flex-wrap justify-content-between ${
+          isLoading || evaluatedCount >= 5 ? "home-section mb-4" : ""
+        }`}
+      >
         {isLoading ? (
           <>
             <div className="ranking-section pe-2">
@@ -197,13 +201,18 @@ export default function Home({ user, onLogout }) {
           </>
         ) : null}
       </div>
-      {isLoading ? (
-        <CommentsLoader />
-      ) : (
-        <CommentsCarousel albums={albums} user={user} />
-      )}
-      {isLoading ? <LatestsLoader /> : <Latests albums={albums} />}
-      {!isLoading && <RatingsTimeline albums={albums} />}
+
+      <div className="home-section mb-4">
+        {isLoading ? <RankingLoader /> : <GeneralRanking albums={albums} />}
+      </div>
+
+      <div className="home-section mb-4">
+        {isLoading ? <RankingLoader /> : <Badges albums={albums} />}
+      </div>
+
+      <div className="home-section mb-4">
+        {!isLoading && <RatingsTimeline albums={albums} />}
+      </div>
     </main>
   );
 }
