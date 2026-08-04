@@ -132,82 +132,84 @@ export default function ArtistProfile() {
           "--banner-text-shadow": bannerTextShadow,
         }}
       >
-        <div className="artist-banner-nav">
-          <button
-            onClick={() => navigateBack(navigate)}
-            className="d-flex align-items-center gap-2 back-button"
-          >
-            <svg
-              width="6"
-              height="11"
-              viewBox="0 0 6 11"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+        <div className="artist-banner-inner">
+          <div className="artist-banner-nav">
+            <button
+              onClick={() => navigateBack(navigate)}
+              className="d-flex align-items-center gap-2 back-button"
             >
-              <path
-                d="M5.94692 1.39394L5.04793 0.5L0.0529785 5.5L5.05298 10.5L5.94692 9.60606L1.84086 5.5L5.94692 1.39394Z"
-                fill={bannerTextColor}
-              />
-            </svg>
-            Voltar
-          </button>
+              <svg
+                width="6"
+                height="11"
+                viewBox="0 0 6 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.94692 1.39394L5.04793 0.5L0.0529785 5.5L5.05298 10.5L5.94692 9.60606L1.84086 5.5L5.94692 1.39394Z"
+                  fill={bannerTextColor}
+                />
+              </svg>
+              Voltar
+            </button>
 
-          <button
-            onClick={() => navigate("/")}
-            className="d-flex align-items-center gap-2 back-button"
-          >
-            <House size={14} weight="bold" color={bannerTextColor} />
-            Home
-          </button>
-        </div>
+            <button
+              onClick={() => navigate("/")}
+              className="d-flex align-items-center gap-2 back-button"
+            >
+              <House size={14} weight="bold" color={bannerTextColor} />
+              Home
+            </button>
+          </div>
 
-        <div className="artist-banner-body">
-          <div className="artist-banner-info">
-            <h1 className="artist-name">{displayName}</h1>
+          <div className="artist-banner-body">
+            <div className="artist-banner-info">
+              <h1 className="artist-name">{displayName}</h1>
 
-            {mostRecentAlbum && (
-              <div className="artist-latest-release">
-                <small>Último lançamento</small>
-                <div className="d-flex align-items-center gap-2">
-                  <img
-                    src={mostRecentAlbum.cover}
-                    alt={mostRecentAlbum.name}
-                    className="artist-latest-release-cover"
-                  />
-                  <div className="d-flex flex-column align-items-start">
-                    <p className="mb-0">
-                      <strong>{mostRecentAlbum.name}</strong>
-                    </p>
-                    <small>
-                      {new Date(
-                        mostRecentAlbum.releaseDate,
-                      ).toLocaleDateString("pt-BR")}
-                    </small>
+              {mostRecentAlbum && (
+                <div className="artist-latest-release">
+                  <small>Último lançamento</small>
+                  <div className="d-flex align-items-center gap-2">
+                    <img
+                      src={mostRecentAlbum.cover}
+                      alt={mostRecentAlbum.name}
+                      className="artist-latest-release-cover"
+                    />
+                    <div className="d-flex flex-column align-items-start">
+                      <p className="mb-0">
+                        <strong>{mostRecentAlbum.name}</strong>
+                      </p>
+                      <small>
+                        {new Date(
+                          mostRecentAlbum.releaseDate,
+                        ).toLocaleDateString("pt-BR")}
+                      </small>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+            </div>
+
+            {infoLoading ? (
+              <div className="artist-banner-image-skeleton skeleton" />
+            ) : (
+              artistInfo?.imageUrl && (
+                <img
+                  src={artistInfo.imageUrl}
+                  alt={displayName}
+                  className="artist-banner-image"
+                />
+              )
             )}
           </div>
 
-          {infoLoading ? (
-            <div className="artist-banner-image-skeleton skeleton" />
-          ) : (
-            artistInfo?.imageUrl && (
-              <img
-                src={artistInfo.imageUrl}
-                alt={displayName}
-                className="artist-banner-image"
-              />
-            )
+          {aggregateRating !== null && (
+            <div className="artist-banner-rating">
+              <small>Nota geral</small>
+              <strong>{aggregateRating.toFixed(1)}</strong>
+            </div>
           )}
         </div>
-
-        {aggregateRating !== null && (
-          <div className="artist-banner-rating">
-            <small>Nota geral</small>
-            <strong>{aggregateRating.toFixed(1)}</strong>
-          </div>
-        )}
       </div>
 
       <div className="artist-content d-flex flex-column align-items-start gap-3 w-100">

@@ -177,6 +177,16 @@ textarea {
   color: variables.$white-color;
 }
 
+.year-nav {
+  margin-top: 0.5rem;
+
+  button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
 .w-5 {
   width: 5%;
 }

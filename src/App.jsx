@@ -23,6 +23,7 @@ import { AlbumProvider } from "./context/AlbumContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import FooterComopnent from "./components/Footer/FooterComponent";
+import ScrollToTopButton from "./components/ScrollToTopButton/ScrollToTopButton";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -75,6 +76,7 @@ export default function App() {
       </Router>
 
       <FooterComopnent user={user} onLogout={handleLogout} />
+      <ScrollToTopButton />
     </AlbumProvider>
   );
 }

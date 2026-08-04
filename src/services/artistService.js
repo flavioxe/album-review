@@ -4,6 +4,7 @@ import { slugify } from "../utils/slug";
 import { getArtistImage } from "./spotifyService";
 import { getArtistProfile } from "./discogsService";
 import { translateToPortuguese } from "./translateService";
+import { getArtistSummary } from "./wikipediaService";
 
 const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 dias
 
@@ -32,17 +33,26 @@ export async function getOrFetchArtistInfo(artistName) {
     return cached;
   }
 
-  const [spotifyResult, discogsResult] = await Promise.allSettled([
+  const [spotifyResult, wikipediaResult, discogsResult] = await Promise.allSettled([
     getArtistImage(artistName),
+    getArtistSummary(artistName),
     getArtistProfile(artistName),
   ]);
 
   const spotifyData = spotifyResult.status === "fulfilled" ? spotifyResult.value : null;
+  const wikipediaData = wikipediaResult.status === "fulfilled" ? wikipediaResult.value : null;
   const discogsData = discogsResult.status === "fulfilled" ? discogsResult.value : null;
 
+  // Wikipedia PT ja vem em portugues nativo e cobre artistas nacionais bem
+  // melhor que o Discogs. Discogs (traduzido) fica so como fallback.
   let bio = cached?.bio || "";
-  if (discogsData?.bio) {
+  let bioSource = cached?.bioSource || "";
+  if (wikipediaData?.bio) {
+    bio = wikipediaData.bio;
+    bioSource = "wikipedia";
+  } else if (discogsData?.bio) {
     bio = await translateToPortuguese(discogsData.bio);
+    bioSource = "discogs";
   }
 
   const info = {
@@ -51,6 +61,7 @@ export async function getOrFetchArtistInfo(artistName) {
     imageUrl: spotifyData?.imageUrl || discogsData?.imageUrl || cached?.imageUrl || "",
     spotifyId: spotifyData?.id || cached?.spotifyId || "",
     bio,
+    bioSource,
     discogsId: discogsData?.discogsId || cached?.discogsId || "",
     fetchedAt: Date.now(),
   };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
+import { CaretLeft, CaretRight } from "phosphor-react";
 import HeaderPages from "../components/HeaderPages/HeaderPages";
 import Month from "../components/Month/Month";
 
@@ -120,6 +121,16 @@ export default function AllAlbum() {
   // Get filtered albums based on the selected year
   const filteredAlbumsByMonth = filterAlbumsByYear(albumsByMonth);
 
+  // Anos vem ordenados do mais recente pro mais antigo, entao o "ano
+  // anterior" (mais antigo) fica no proximo indice, e o "proximo ano"
+  // (mais recente) fica no indice anterior.
+  const currentYearIndex = years.indexOf(selectedYear);
+  const previousYear =
+    currentYearIndex >= 0 && currentYearIndex < years.length - 1
+      ? years[currentYearIndex + 1]
+      : null;
+  const nextYear = currentYearIndex > 0 ? years[currentYearIndex - 1] : null;
+
   return (
     <main className="d-flex flex-column align-items-start gap-3">
       <HeaderPages text="Todas as reviews" />
@@ -149,6 +160,29 @@ export default function AllAlbum() {
 
       {/* Display albums for the selected year */}
       <Month albums={filteredAlbumsByMonth} selectedYear={selectedYear} />
+
+      {/* Navegacao entre anos */}
+      {(previousYear || nextYear) && (
+        <div className="d-flex align-items-center justify-content-between w-100 year-nav">
+          <button
+            className="button-outline d-flex align-items-center gap-2"
+            disabled={!previousYear}
+            onClick={() => previousYear && setSelectedYear(previousYear)}
+          >
+            <CaretLeft size={16} weight="bold" />
+            {previousYear ?? ""}
+          </button>
+
+          <button
+            className="button-outline d-flex align-items-center gap-2"
+            disabled={!nextYear}
+            onClick={() => nextYear && setSelectedYear(nextYear)}
+          >
+            {nextYear ?? ""}
+            <CaretRight size={16} weight="bold" />
+          </button>
+        </div>
+      )}
     </main>
   );
 }

@@ -14,6 +14,16 @@
     overflow: hidden;
 }
 
+.artist-banner-inner {
+    position: relative;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .artist-banner-nav {
     position: absolute;
     top: 0;
@@ -94,12 +104,17 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
+// A foto participa do fluxo normal do flex (define a altura do banner,
+// junto com o texto), mas "sangra" pra fora da coluna centralizada de
+// 1280px ate a borda real da tela em telas largas - sem isso, o banner
+// ficaria preso ao min-height e perderia a altura definida pela imagem.
 .artist-banner-image {
     height: 100%;
     width: auto;
     max-width: 55%;
     object-fit: cover;
     flex-shrink: 0;
+    margin-right: min(0px, calc((100vw - 1280px) / -2));
     mask-image: linear-gradient(to right, transparent, #000 15%);
     -webkit-mask-image: linear-gradient(to right, transparent, #000 15%);
 }
@@ -140,6 +155,8 @@
     max-width: 55%;
     aspect-ratio: 3 / 4;
     border-radius: 0;
+    flex-shrink: 0;
+    margin-right: min(0px, calc((100vw - 1280px) / -2));
 }
 
 .artist-bio-skeleton {
@@ -272,6 +289,7 @@
         width: 100%;
         height: auto;
         min-height: 10rem;
+        margin-right: 0;
         mask-image: linear-gradient(to bottom, transparent, #000 30%);
         -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%);
     }
@@ -281,6 +299,7 @@
         padding: 0;
         color: #ffffff;
         text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+        margin-right: 0.5rem;
 
         small {
             font-size: 0.65rem;

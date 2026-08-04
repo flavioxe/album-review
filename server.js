@@ -387,6 +387,174 @@ app.get("/api/translate", async (req, res) => {
   }
 });
 
+const WIKIPEDIA_API_BASE = "https://pt.wikipedia.org/w/api.php";
+const WIKIPEDIA_REST_BASE = "https://pt.wikipedia.org/api/rest_v1/page/summary";
+const WIKIPEDIA_USER_AGENT = "AlbumReviewApp/1.0 (contact: https://github.com)";
+
+const fetchWikipediaSummaryByTitle = async (title) => {
+  const url = `${WIKIPEDIA_REST_BASE}/${encodeURIComponent(title)}`;
+  const response = await fetch(url, {
+    headers: { "User-Agent": WIKIPEDIA_USER_AGENT, Accept: "application/json" },
+  });
+
+  if (response.status === 404) return null;
+
+  if (!response.ok) {
+    const message = await response.text();
+    const err = new Error(`Wikipedia summary request failed: ${message}`);
+    err.status = response.status;
+    throw err;
+  }
+
+  return response.json();
+};
+
+const searchWikipediaArticleTitles = async (query, limit = 5) => {
+  const searchParams = new URLSearchParams({
+    action: "query",
+    list: "search",
+    srsearch: query,
+    srlimit: String(limit),
+    format: "json",
+    origin: "*",
+  });
+
+  const response = await fetch(`${WIKIPEDIA_API_BASE}?${searchParams.toString()}`, {
+    headers: { "User-Agent": WIKIPEDIA_USER_AGENT },
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    const err = new Error(`Wikipedia search request failed: ${message}`);
+    err.status = response.status;
+    throw err;
+  }
+
+  const data = await response.json();
+  const results = data?.query?.search || [];
+  return results.map((result) => result.title).filter(Boolean);
+};
+
+const mapWikipediaSummary = (summary) => ({
+  bio: summary?.extract || "",
+  sourceUrl: summary?.content_urls?.desktop?.page || "",
+});
+
+const normalizeWikipediaCompare = (text) =>
+  (text || "")
+    .toString()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+const toWikipediaTitleCase = (text) =>
+  (text || "")
+    .toLowerCase()
+    .split(" ")
+    .map((word) => (word ? word[0].toUpperCase() + word.slice(1) : word))
+    .join(" ");
+
+const isWikipediaTitleAMatch = (title, artistName) => {
+  const normalizedTitle = normalizeWikipediaCompare(title);
+  const normalizedName = normalizeWikipediaCompare(artistName);
+  if (!normalizedTitle || !normalizedName) return false;
+  return (
+    normalizedTitle.includes(normalizedName) ||
+    normalizedName.includes(normalizedTitle)
+  );
+};
+
+const WIKIPEDIA_MUSIC_KEYWORDS = [
+  "cantor",
+  "cantora",
+  "cantautor",
+  "cantautora",
+  "compositor",
+  "compositora",
+  "banda",
+  "musico",
+  "musica",
+  "rapper",
+  "dj",
+  "grupo musical",
+  "produtor musical",
+  "artista musical",
+  "grupo de k pop",
+  "girl group",
+  "boy group",
+  "vocalista",
+  "instrumentista",
+  "k pop",
+  "hip hop",
+];
+
+const looksLikeWikipediaMusicSummary = (summary) => {
+  const text = normalizeWikipediaCompare(summary?.extract);
+  if (!text) return false;
+  return WIKIPEDIA_MUSIC_KEYWORDS.some((keyword) => text.includes(keyword));
+};
+
+const findBestWikipediaMusicSummary = async (artistName) => {
+  const candidateTitles = await searchWikipediaArticleTitles(artistName);
+
+  for (const title of candidateTitles) {
+    if (!isWikipediaTitleAMatch(title, artistName)) continue;
+
+    const summary = await fetchWikipediaSummaryByTitle(title);
+    if (!summary || summary.type === "disambiguation" || !summary.extract) continue;
+    if (looksLikeWikipediaMusicSummary(summary)) return summary;
+  }
+
+  return null;
+};
+
+const getArtistSummaryFromWikipedia = async (artistName) => {
+  let summary = await fetchWikipediaSummaryByTitle(artistName);
+
+  if (!summary || summary.type === "disambiguation" || !summary.extract) {
+    const titleCased = toWikipediaTitleCase(artistName);
+    if (titleCased !== artistName) {
+      summary = await fetchWikipediaSummaryByTitle(titleCased);
+    }
+  }
+
+  if (summary && !looksLikeWikipediaMusicSummary(summary)) {
+    summary = null;
+  }
+
+  if (!summary) {
+    summary = await findBestWikipediaMusicSummary(artistName);
+  }
+
+  if (!summary || summary.type === "disambiguation" || !summary.extract) {
+    return null;
+  }
+
+  return mapWikipediaSummary(summary);
+};
+
+app.get("/api/wikipedia/artist-summary", async (req, res) => {
+  const { q } = req.query;
+  if (!q || !String(q).trim()) {
+    return res.status(400).json({ error: "Query param 'q' is required" });
+  }
+
+  try {
+    const summary = await getArtistSummaryFromWikipedia(String(q).trim());
+    if (!summary) {
+      return res.status(404).json({ error: "Artist not found on Wikipedia" });
+    }
+    return res.json(summary);
+  } catch (error) {
+    const status = error.status || 500;
+    return res
+      .status(status >= 400 && status < 500 ? status : 500)
+      .json({ error: error.message || "Erro ao consultar a Wikipedia" });
+  }
+});
+
 // Iniciar o servidor
 app.listen(PORT, () => {
   if (!process.env.SPOTIFY_CLIENT_ID || !process.env.SPOTIFY_CLIENT_SECRET) {
